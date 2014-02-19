@@ -60,8 +60,6 @@ class LoginBox
       @formSubmit e, '<%= FancyLogin::Config.sign_in_url %>.jsonp'
     $('#register_form').submit (e) =>
       @formSubmit e, '<%= FancyLogin::Config.sign_up_url %>.jsonp'
-    $('#resend-email-link').on 'click', (e) =>
-
 
   blocked: false,
 
@@ -86,7 +84,8 @@ class LoginBox
     @unblock()
     $('#loginbox .fancybox-notice').html(message)
     if error
-      $('#loginbox .fancybox-notice').addClass('error') 
+      $('#loginbox .fancybox-notice').addClass('error')
+    $('#loginbox .fancybox-notice').show()
     $.fancybox.update()    
 
   clearFancyBoxError: ->
@@ -181,7 +180,7 @@ class LoginBox
             form.find("button").removeAttr('disabled')
             @unblock()
             @clear
-            $showFancyBoxMessage(json.message, false)
+            @showFancyBoxMessage(json.message, false)
           else
             window.processLogin()
       })
@@ -320,7 +319,7 @@ class RememberTokenConfirmationBox
   #initialize fancybox and attach click event on each link with class forgot-pass
   initFancybox: () ->
 
-    $('.remember-token').fancybox({
+    $('.resend-email-link').fancybox({
       closeBtn: false,
       padding:0,
       autoSize:false,
@@ -330,7 +329,7 @@ class RememberTokenConfirmationBox
         $("#remembertokenbox input").focus()
       href: '#remembertokenbox' }); #which div to show as fancybox
 
-    $('.remember-token').on "click", (e)=>
+    $('.resend-email-link').on "click", (e)=>
       @clear()
       $("#remembertokenbox input").val $("#login_form .email input").val()
       e.preventDefault();
