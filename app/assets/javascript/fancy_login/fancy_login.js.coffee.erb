@@ -32,6 +32,7 @@ class LoginBox
       $.fancybox.close();
 
     $('a.btn-facebook').click (e)=>
+      debugger
       e.preventDefault()
       @clearFacebookError()
       FB.login (response) ->
