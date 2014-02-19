@@ -4,21 +4,7 @@ class LoginBox
 
   #Initialize fancybox and attach click event on each link with class not-logged-in
   initFancybox: () ->
-    $('.not-logged-in').fancybox({
-      closeBtn: false,
-      padding:0,
-      autoSize:false,
-      enableEscapeButton:true,
-      width:'60%',
-      height: 'auto',
-      afterShow: () =>
-        if LoginBox.target?.hasClass('not-registered')
-          $("#register_form .email input").focus()
-        else
-          $("#login_form .email input").focus()
-      href: '#loginbox'
-    }); #which div to show as fancybox
-
+    @show_into_fancybox()
     #since .not-logged-in can be applied to a link or a button
     $(document).on "click", ".not-logged-in", (e)=>
       if @blocked
@@ -62,6 +48,22 @@ class LoginBox
       @formSubmit e, '<%= FancyLogin::Config.sign_up_url %>.jsonp'
 
   blocked: false,
+
+  show_into_fancybox: () ->
+    $('.not-logged-in').fancybox({
+      closeBtn: false,
+      padding:0,
+      autoSize:false,
+      enableEscapeButton:true,
+      width:'60%',
+      height: 'auto',
+      afterShow: () =>
+        if LoginBox.target?.hasClass('not-registered')
+          $("#register_form .email input").focus()
+        else
+          $("#login_form .email input").focus()
+      href: '#loginbox'
+    }); #which div to show as fancybox
 
   block: =>
     @blocked = true
@@ -329,7 +331,7 @@ class RememberTokenConfirmationBox
         $("#remembertokenbox input").focus()
       href: '#remembertokenbox' }); #which div to show as fancybox
 
-    $('.resend-email-link').on "click", (e)=>
+    $('.resend-email-link').on 'click', (e)=>
       @clear()
       $("#remembertokenbox input").val $("#login_form .email input").val()
       e.preventDefault();
@@ -399,7 +401,6 @@ class RememberTokenConfirmationBox
           form.find('.other .help-inline').html('Dirección de email no registrada')
           $.fancybox.update()
           return
-
         window.ReloadPage()
     })
 
@@ -447,6 +448,7 @@ window.processLogin = () ->
     $.fancybox.close()
     target    = LoginBox.target # element clicked
     callback  = LoginBox.target.data('login-callback')
+
     #eval is considered to be EVIL, but in this case is totally appropriate since this code always comes from us to the user http://stackoverflow.com/questions/86513/why-is-using-the-javascript-eval-function-a-bad-idea
     # first arg is the context (it's passed implicitly) and the second one is the element that was clicked
     eval(callback).call(this,target);
