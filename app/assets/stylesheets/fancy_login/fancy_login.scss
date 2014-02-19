@@ -7,7 +7,7 @@ $red-error-text: #B94A48;
 $secondary: #eeaf00;//orange
 
 
-#loginbox.modalbox {
+.modalbox {
   width: 100%;
   height: 100%;
   background: $lightgray;
@@ -30,11 +30,11 @@ $secondary: #eeaf00;//orange
 
   .facebook-notice, .fancybox-notice {
     display: none;
-      background-color: $red-error-text;
-      color: white;
-      padding: 0.5em;
-      margin: -0.5em 0.5em 0.5em 0.5em;
-      @include border-radius(4px);
+    background-color: $red-error-text;
+    color: white;
+    padding: 0.5em;
+    margin: -0.5em 0.5em 0.5em 0.5em;
+    @include border-radius(4px);
 
     &.error {
       display: block;
@@ -175,8 +175,8 @@ $secondary: #eeaf00;//orange
     margin-left: 1em;
   }
 
-  .remember-token-link{
-    display: none;
+  .resend-token-link{
+    text-decoration: underline;
   }
 }
 

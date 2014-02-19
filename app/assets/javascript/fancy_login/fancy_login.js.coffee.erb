@@ -60,6 +60,8 @@ class LoginBox
       @formSubmit e, '<%= FancyLogin::Config.sign_in_url %>.jsonp'
     $('#register_form').submit (e) =>
       @formSubmit e, '<%= FancyLogin::Config.sign_up_url %>.jsonp'
+    $('#resend-email-link').on 'click', (e) =>
+
 
   blocked: false,
 
@@ -76,14 +78,21 @@ class LoginBox
     $.fancybox.update()
 
   clearFacebookError: ->
-      $('#loginbox .facebook-notice').removeClass('error')
-      $('#loginbox .facebook-notice').html('')
-      $.fancybox.update()
+    $('#loginbox .facebook-notice').removeClass('error')
+    $('#loginbox .facebook-notice').html('')
+    $.fancybox.update()
+
+  showFancyBoxMessage: (message, error) ->
+    @unblock()
+    $('#loginbox .fancybox-notice').html(message)
+    if error
+      $('#loginbox .fancybox-notice').addClass('error') 
+    $.fancybox.update()    
 
   clearFancyBoxError: ->
-      $('#loginbox .fancybox-errors').removeClass('error')
-      $('#loginbox .facebook-errors').html('')
-      $.fancybox.update()
+    $('#loginbox .fancybox-notice').removeClass('error')
+    $('#loginbox .fancybox-notice').html('')
+    $.fancybox.update()
 
   # Login form submit VALIDATION SHOULD HAVE BEEN DONE USING jQVALIDATOR!!! :(
   # This form submit is used both for login and registration
@@ -172,9 +181,7 @@ class LoginBox
             form.find("button").removeAttr('disabled')
             @unblock()
             @clear
-            $('.fancybox-notice').html(json.message).show()
-            if json.show_confirm_link
-              $('.remember-token-link').show()
+            $showFancyBoxMessage(json.message, false)
           else
             window.processLogin()
       })
