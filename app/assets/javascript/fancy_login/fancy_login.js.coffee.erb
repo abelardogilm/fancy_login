@@ -1,0 +1,452 @@
+class LoginBox
+  constructor: () ->
+    @initFancybox()
+
+  #Initialize fancybox and attach click event on each link with class not-logged-in
+  initFancybox: () ->
+    $('.not-logged-in').fancybox({
+      closeBtn: false,
+      padding:0,
+      autoSize:false,
+      enableEscapeButton:true,
+      width:'60%',
+      height: 'auto',
+      afterShow: () =>
+        if LoginBox.target?.hasClass('not-registered')
+          $("#register_form .email input").focus()
+        else
+          $("#login_form .email input").focus()
+      href: '#loginbox'
+    }); #which div to show as fancybox
+
+    #since .not-logged-in can be applied to a link or a button
+    $(document).on "click", ".not-logged-in", (e)=>
+      if @blocked
+        return
+      LoginBox.target = $(e.target)
+      @clear()
+      e.preventDefault()
+
+    $('a.loginbox-close').click (e)->
+      e.preventDefault();
+      $.fancybox.close();
+
+    $('a.btn-facebook').click (e)=>
+      e.preventDefault()
+      @clearFacebookError()
+      FB.login (response) ->
+        if response.authResponse
+          $.ajax
+            url: '<%= FancyLogin::Config.facebook_url_callback %>?format=jsonp'
+            dataType: "JSONP"
+            timeout: 20000,
+            success: (json) ->
+              window.processLogin()
+            error: ()->
+              window.LoginBox.showFacebookError()
+        else
+          window.LoginBox.showFacebookError()
+      , scope: 'email'
+      return false
+
+    $("#loginbox input").keyup (e)=>
+      if e.keyCode == 27 # close dialog on <Esc>
+        $.fancybox.close()
+        return
+      else if e.keyCode == 13 # don't clear error on <Enter>
+        return
+      @clearField e
+    $('#login_form').submit (e) =>
+      @formSubmit e, '<%= FancyLogin::Config.sign_in_url %>.jsonp'
+    $('#register_form').submit (e) =>
+      @formSubmit e, '<%= FancyLogin::Config.sign_up_url %>.jsonp'
+
+  blocked: false,
+
+  block: =>
+    @blocked = true
+
+  unblock: =>
+    @blocked = false
+
+  showFacebookError: ->
+    @unblock()
+    $('#loginbox .facebook-notice').html('No pudimos iniciar tu sesión con Facebook')
+    $('#loginbox .facebook-notice').addClass('error')
+    $.fancybox.update()
+
+  clearFacebookError: ->
+      $('#loginbox .facebook-notice').removeClass('error')
+      $('#loginbox .facebook-notice').html('')
+      $.fancybox.update()
+
+  clearFancyBoxError: ->
+      $('#loginbox .fancybox-errors').removeClass('error')
+      $('#loginbox .facebook-errors').html('')
+      $.fancybox.update()
+
+  # Login form submit VALIDATION SHOULD HAVE BEEN DONE USING jQVALIDATOR!!! :(
+  # This form submit is used both for login and registration
+  formSubmit: (e, url)->
+      e.preventDefault()
+      if @blocked
+        return false
+      form = $(e.target)
+      form_id = $(form).attr("id")
+
+      has_errors = false
+      email = form.find('.email input').val()
+      if !@isEmailValid email
+        form.find('.email').addClass('error')
+        form.find('.email .help-inline').html('El email es incorrecto')
+        has_errors = true
+      else
+        form.find('.email').removeClass('error')
+        form.find('.email .help-inline').html()
+
+      password = form.find('.password input').val()
+      if password.length == 0
+        form.find('.password').addClass('error')
+        form.find('.password .help-inline').html('La contraseña es inválida (vacía)')
+        has_errors = true
+      else if password.length < 8 and form.attr('id') == 'register_form'
+        form.find('.password').addClass('error')
+        form.find('.password .help-inline').html('La contraseña es demasiado corta (8 caracteres mínimo)')
+        has_errors = true
+      else
+        form.find('.password').removeClass('error')
+        form.find('.password .help-inline').html()
+
+      # Register form ask for terms and conditions
+      if (form_id == "register_form")
+        if ( $("#loginbox-terms-and-conditions").is(':checked') == false )
+          form.find('#terms').addClass('error')
+          form.find('#terms .help-inline').html('Por favor, acepta las condiciones')
+          has_errors = true
+        else
+          form.find('#terms').removeClass('error')
+          form.find('#terms .help-inline').html()
+
+      if has_errors
+        $.fancybox.update()
+        return false
+
+      # send the request
+      form.find('.other').removeClass('error')
+      $.fancybox.update()
+      form.find("button").attr('disabled', 'disabled')
+      @block()
+      $.ajax({
+        url: url,
+        dataType: "JSONP",
+        timeout: 20000,
+        data: {user: {email: email, password: password, "remember_me": true}},
+
+        # deals with unknown errors
+        error: () =>
+          @unblock()
+          # re-enable the send button after some unhandled error happened
+          form.find('.other').addClass('error')
+          form.find('.other .help-inline').html("Ocurrió un error, por favor vuelva a intentarlo")
+          form.find("button").removeAttr('disabled')
+          $.fancybox.update()
+
+        # deals with known response types (included errors from server side)
+        success: (json, textStatus, xOptions) =>
+          # if there was some error, show it to the user and finish
+          if json.status != 200
+            @unblock()
+            form.find("button").removeAttr('disabled')
+            if json.user?.errors?.email
+              form.find('.email').addClass('error')
+              form.find('.email .help-inline').html(json.user.errors.email)
+            if json.user?.errors?.password
+              form.find('.password').addClass('error')
+              form.find('.password .help-inline').html(json.user.errors.password)
+            if json.message
+              form.find('.other').addClass('error')
+              form.find('.other .help-inline').html(json.message)
+            $.fancybox.update()
+            return
+          if json.need_confirm
+            form.find("button").removeAttr('disabled')
+            @unblock()
+            @clear
+            $('.fancybox-notice').html(json.message).show()
+            if json.show_confirm_link
+              $('.remember-token-link').show()
+          else
+            window.processLogin()
+      })
+
+  clear: () ->
+    $('#loginbox .email, #loginbox .password').removeClass('error')
+    $('#loginbox .help-inline').html('')
+    $('#loginbox input').val('')
+    @clearFacebookError()
+    @clearFancyBoxError()
+
+  clearField: (e)->
+    $(e.target).parent().parent().removeClass('error')
+    @clearFacebookError()
+    @clearFancyBoxError()
+
+  isEmailValid: (emailAddress) ->
+    pattern = new RegExp /// ^
+                    [a-z0-9!#$%&'*+/=?^_`{|}~]+(?:[\.-][a-z0-9!#$%&'*+/=?^_`{|}~-]+)*
+                    @
+                    (?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9][a-z0-9-]*[a-z0-9]
+                  $ ///i
+    pattern.test emailAddress
+
+
+# #
+# Forgot password fancy box login
+# #
+class ForgotPassBox
+  constructor: () ->
+    @initFancybox()
+
+  #initialize fancybox and attach click event on each link with class forgot-pass
+  initFancybox: () ->
+
+    $('.forgot-pass').fancybox({
+      closeBtn: false,
+      padding:0,
+      autoSize:false,
+      width:'650px',
+      height: 'auto',
+      afterShow: () =>
+        $("#forgotpassbox input").focus()
+      href: '#forgotpassbox' }); #which div to show as fancybox
+
+    $('.forgot-pass').on "click", (e)=>
+      @clear()
+      $("#forgotpassbox input").val $("#login_form .email input").val()
+      e.preventDefault();
+
+    $('a.forgotpassbox-close').click (e)->
+          e.preventDefault();
+          $.fancybox.close();
+
+    $("#forgotpassbox input").keyup (e)=>
+      if e.keyCode == 27 # close dialog on <Esc>
+        $.fancybox.close()
+      @clearField e
+    $('#forgotpassbox_form').submit (e) =>
+      @formSubmit e
+
+  clearField: (e)->
+    $(e.target).parent().parent().removeClass('error')
+
+  clear: () ->
+    $('#forgotpassbox .email').removeClass('error')
+    $('#forgotpassbox .help-inline').html('')
+    $('#forgotpassbox input').val('')
+
+  formSubmit: (e)->
+      e.preventDefault()
+      if window.LoginBox.blocked
+        return
+      form = $(e.target)
+
+      email = form.find('.email input').val()
+      if !@isEmailValid email
+        form.find('.email').addClass('error')
+        form.find('.email .help-inline').html('El email es incorrecto')
+        $.fancybox.update()
+        return false
+      else
+        form.find('.email').removeClass('error')
+        form.find('.email .help-inline').html()
+        $.fancybox.update()
+
+      # send the request
+      form.find('.other').removeClass('error')
+      form.find("button").attr('disabled', 'disabled')
+      window.LoginBox.block()
+      $.ajax({
+        url: '<%= FancyLogin::Config.reset_password_url %>.jsonp',
+        dataType: "JSONP",
+        timeout: 20000,
+        data: {user: {email: email}},
+
+        # deals with unknown errors
+        error: () =>
+          # re-enable the send button after some unhandled error happened
+          window.LoginBox.unblock()
+          form.find('.other').addClass('error')
+          form.find('.other .help-inline').html("Ocurrió un error, por favor vuelva a intentarlo")
+          form.find("button").removeAttr('disabled');
+          $.fancybox.update()
+
+        # deals with known response types (included errors from server side)
+        success: (json, textStatus, xOptions) =>
+          # if there was some error, show it to the user and finish
+          if json.status != 200
+            window.LoginBox.unblock()
+            form.find("button").removeAttr('disabled');
+            form.find('.other').addClass('error')
+            form.find('.other .help-inline').html('Dirección de email no registrada')
+            $.fancybox.update()
+            return
+
+          window.ReloadPage()
+      })
+
+  isEmailValid: (emailAddress) ->
+    pattern = new RegExp /// ^
+                    [a-z0-9!#$%&'*+/=?^_`{|}~]+(?:[\.-][a-z0-9!#$%&'*+/=?^_`{|}~-]+)*
+                    @
+                    (?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9][a-z0-9-]*[a-z0-9]
+                  $ ///i
+    pattern.test emailAddress
+
+
+# #
+# Forgot password fancy box login
+# #
+class RememberTokenConfirmationBox
+  constructor: () ->
+    @initFancybox()
+
+  #initialize fancybox and attach click event on each link with class forgot-pass
+  initFancybox: () ->
+
+    $('.remember-token').fancybox({
+      closeBtn: false,
+      padding:0,
+      autoSize:false,
+      width:'650px',
+      height: 'auto',
+      afterShow: () =>
+        $("#remembertokenbox input").focus()
+      href: '#remembertokenbox' }); #which div to show as fancybox
+
+    $('.remember-token').on "click", (e)=>
+      @clear()
+      $("#remembertokenbox input").val $("#login_form .email input").val()
+      e.preventDefault();
+
+    $('a.remembertokenbox-close').click (e)->
+          e.preventDefault();
+          $.fancybox.close();
+
+    $("#remembertokenbox input").keyup (e)=>
+      if e.keyCode == 27 # close dialog on <Esc>
+        $.fancybox.close()
+      @clearField e
+    $('#remembertokenbox-form').submit (e) =>
+      @formSubmit e
+
+  clearField: (e)->
+    $(e.target).parent().parent().removeClass('error')
+
+  clear: () ->
+    $('#remembertokenbox .email').removeClass('error')
+    $('#remembertokenbox .help-inline').html('')
+    $('#remembertokenbox input').val('')
+
+  formSubmit: (e)->
+      e.preventDefault()
+      if window.LoginBox.blocked
+        return
+      form = $(e.target)
+
+      email = form.find('.email input').val()
+      if !@isEmailValid email
+        form.find('.email').addClass('error')
+        form.find('.email .help-inline').html('El email es incorrecto')
+        $.fancybox.update()
+        return false
+      else
+        form.find('.email').removeClass('error')
+        form.find('.email .help-inline').html()
+        $.fancybox.update()
+
+      # send the request
+      form.find('.other').removeClass('error')
+      form.find("button").attr('disabled', 'disabled')
+      window.LoginBox.block()
+      $.ajax({
+        url: '<%= FancyLogin::Config.confirmation_url %>.jsonp',
+        dataType: "JSONP",
+        timeout: 20000,
+        data: {user: {email: email}},
+
+        # deals with unknown errors
+        error: () =>
+          # re-enable the send button after some unhandled error happened
+          window.LoginBox.unblock()
+          form.find('.other').addClass('error')
+          form.find('.other .help-inline').html("Ocurrió un error, por favor vuelva a intentarlo")
+          form.find("button").removeAttr('disabled');
+          $.fancybox.update()
+
+        # deals with known response types (included errors from server side)
+        success: (json, textStatus, xOptions) =>
+          # if there was some error, show it to the user and finish
+          if json.status != 200
+            window.LoginBox.unblock()
+            form.find("button").removeAttr('disabled');
+            form.find('.other').addClass('error')
+            form.find('.other .help-inline').html('Dirección de email no registrada')
+            $.fancybox.update()
+            return
+
+          window.ReloadPage()
+      })
+
+  isEmailValid: (emailAddress) ->
+    pattern = new RegExp /// ^
+                    [a-z0-9!#$%&'*+/=?^_`{|}~]+(?:[\.-][a-z0-9!#$%&'*+/=?^_`{|}~-]+)*
+                    @
+                    (?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9][a-z0-9-]*[a-z0-9]
+                  $ ///i
+    pattern.test emailAddress
+
+
+
+
+$(document).ready ->
+  window.LoginBox = new LoginBox
+  window.ForgotPassBox = new ForgotPassBox
+  window.RememberTokenConfirmationBox = new RememberTokenConfirmationBox
+
+
+
+# Used to safely reload the page. It sends a GET request to the current URL
+window.ReloadPage = ->
+  window.location = location.href
+
+# Process login is called after login has been successful. It allows different
+# behaviour depending on the target (i.e. clicked link or input that triggered
+# the login):
+#
+# 1 By default, it reloads the page's current URL, not sending any form
+# previously sent when loading current URL. via a GET request.
+#
+# 2 If the target (link/button) has a data-login-callback attribute such as "window.Campaign11.loginCallback"
+# this gets evaluated executed as a callback.
+# So, for example, to have a custom callback after successful login you have to provide that callback in the data attribute.
+# NOTE: the loginbox (fancybox) will remain shown, but you can close it directly calling to $.fancybox.close().
+# NOTE: you can reload safely the page calling to window.ReloadPage() which will take care of not sending any POST data and any other reload
+# details that might happen.
+#
+# 3 In case there's no callback and the target is an input[type="submit"] inside a form, the form will be sent by triggering the form's submit event (form.submit())
+#
+# 4 If the target has the data-target-url attribute set, then the page will load via a GET request the specified URL.
+window.processLogin = () ->
+  if LoginBox.target?.data('login-callback')
+    $.fancybox.close()
+    target    = LoginBox.target # element clicked
+    callback  = LoginBox.target.data('login-callback')
+    #eval is considered to be EVIL, but in this case is totally appropriate since this code always comes from us to the user http://stackoverflow.com/questions/86513/why-is-using-the-javascript-eval-function-a-bad-idea
+    # first arg is the context (it's passed implicitly) and the second one is the element that was clicked
+    eval(callback).call(this,target);
+  else if LoginBox.target?.prop("nodeName").toLowerCase() == 'input' and LoginBox.target.attr("type").toLowerCase() == 'submit'
+    LoginBox.target.closest('form').submit()
+  else if LoginBox.target?.data('target-url')
+    location.href = LoginBox.target.data('target-url')
+  else
+    window.ReloadPage()

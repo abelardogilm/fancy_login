@@ -1,0 +1,26 @@
+#remembertokenbox.modalbox
+  .modal-header
+    %h1
+      Confirmación usuario
+    %a.remembertokenbox-close.close-btn{href: '#', rel: 'nofollow'}
+      X
+
+  .modal-content
+    .wrapper
+      .centered
+        %h3
+          Ingrese su dirección de email
+        %h2
+          Le enviemos un enlace con el activar su cuenta de usuario
+      %form#remembertokenbox-form{method: 'post', action: '#'}
+        .email
+          %label{for: '#remembertokenbox-email'} Correo electrónico
+          .help-inline
+          %p
+            %input#remembertokenbox-email.form-control{autofocus: 'autofocus', name: 'user[email]', placeholder: 'Correo electrónico', size: '30', title: 'Obligatorio', type: 'text', value: ''}
+
+        .other
+          .help-inline
+        %p
+          %button.btn.btn-success.btn-large.btn-block{type: 'submit'}
+            Enviar email

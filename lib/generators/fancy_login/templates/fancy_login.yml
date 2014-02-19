@@ -1,0 +1,13 @@
+app:
+  name: "APP_NAME"
+user:
+  has_confirmation: false
+  has_reset_password: false
+  has_facebook_login: false
+routes:
+  url: "http://domain.example.com"
+  sign_in_path: "path/to/signin"
+  sign_up_path: "path/to/signup"
+  confirmation_path: "path/send/email/confirm"
+  reset_password_path: "path/send/email/confirm"
+  facebook_path: "path/facebook"

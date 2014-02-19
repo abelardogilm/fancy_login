@@ -1,0 +1,29 @@
+#loginbox-sign-in.loginbox-col
+  %h2
+    = "Accede a #{@config.app_name}"
+
+  .centered
+    = render 'fancy_login/sign_in_facebook' if @config.user["has_facebook_login"]
+      
+
+  %h3.centered
+    O accede con tu correo electrónico
+  %form#login_form{method: 'post', action: '#'}
+    .email
+      .help-inline
+      %p
+        %input#loginbox-email.form-control{autofocus: 'autofocus', name: 'user[email]', placeholder: 'Correo electrónico', size: '30', title: 'Obligatorio', type: 'text', value: ''}
+
+    .password
+      .help-inline
+      %p
+        %input#loginbox-pass.form-control{name: 'user[password]', placeholder: 'Contraseña', maxlength: '30', type: 'password'}
+
+    .other
+      .help-inline
+    %p
+      %button.btn.btn-primary.btn-large{type: 'submit'}
+        Iniciar Sesión
+      - if @config.user["has_reset_password"]
+        %a.forgot-pass{href: '#', rel: 'nofollow'}
+          ¿Has olvidado tu contraseña?
