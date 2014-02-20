@@ -23,7 +23,7 @@ class LoginBox
       FB.login (response) ->
         if response.authResponse
           $.ajax
-            url: '<%= FancyLogin::Config.facebook_url_callback %>?format=jsonp'
+            url: $(e.currentTarget).attr('href')
             dataType: "JSONP"
             timeout: 20000,
             success: (json) ->
@@ -43,9 +43,9 @@ class LoginBox
         return
       @clearField e
     $('#login_form').submit (e) =>
-      @formSubmit e, '<%= FancyLogin::Config.sign_in_url %>.jsonp'
+      @formSubmit e, $('#login_form').data('url')
     $('#register_form').submit (e) =>
-      @formSubmit e, '<%= FancyLogin::Config.sign_up_url %>.jsonp'
+      @formSubmit e, $('#register_form').data("url")
 
   blocked: false,
 
@@ -274,7 +274,7 @@ class ForgotPassBox
       form.find("button").attr('disabled', 'disabled')
       window.LoginBox.block()
       $.ajax({
-        url: '<%= FancyLogin::Config.reset_password_url %>.jsonp',
+        url: form.data("url"),
         dataType: "JSONP",
         timeout: 20000,
         data: {user: {email: email}},
@@ -377,7 +377,7 @@ class RememberTokenConfirmationBox
     form.find("button").attr('disabled', 'disabled')
     window.LoginBox.block()
     $.ajax({
-      url: '<%= FancyLogin::Config.confirmation_url %>.jsonp',
+      url: form.data("url"),
       dataType: "JSONP",
       timeout: 20000,
       data: {user: {email: email}},
