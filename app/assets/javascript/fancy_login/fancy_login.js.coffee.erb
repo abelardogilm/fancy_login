@@ -4,21 +4,7 @@ class LoginBox
 
   #Initialize fancybox and attach click event on each link with class not-logged-in
   initFancybox: () ->
-    $('.not-logged-in').fancybox({
-      closeBtn: false,
-      padding:0,
-      autoSize:false,
-      enableEscapeButton:true,
-      width:'60%',
-      height: 'auto',
-      afterShow: () =>
-        if LoginBox.target?.hasClass('not-registered')
-          $("#register_form .email input").focus()
-        else
-          $("#login_form .email input").focus()
-      href: '#loginbox'
-    }); #which div to show as fancybox
-
+    @show_into_fancybox()
     #since .not-logged-in can be applied to a link or a button
     $(document).on "click", ".not-logged-in", (e)=>
       if @blocked
@@ -60,10 +46,24 @@ class LoginBox
       @formSubmit e, '<%= FancyLogin::Config.sign_in_url %>.jsonp'
     $('#register_form').submit (e) =>
       @formSubmit e, '<%= FancyLogin::Config.sign_up_url %>.jsonp'
-    $('#resend-email-link').on 'click', (e) =>
-
 
   blocked: false,
+
+  show_into_fancybox: () ->
+    $('.not-logged-in').fancybox({
+      closeBtn: false,
+      padding:0,
+      autoSize:false,
+      enableEscapeButton:true,
+      width:'60%',
+      height: 'auto',
+      afterShow: () =>
+        if LoginBox.target?.hasClass('not-registered')
+          $("#register_form .email input").focus()
+        else
+          $("#login_form .email input").focus()
+      href: '#loginbox'
+    }); #which div to show as fancybox
 
   block: =>
     @blocked = true
@@ -86,7 +86,8 @@ class LoginBox
     @unblock()
     $('#loginbox .fancybox-notice').html(message)
     if error
-      $('#loginbox .fancybox-notice').addClass('error') 
+      $('#loginbox .fancybox-notice').addClass('error')
+    $('#loginbox .fancybox-notice').show()
     $.fancybox.update()    
 
   clearFancyBoxError: ->
@@ -181,7 +182,7 @@ class LoginBox
             form.find("button").removeAttr('disabled')
             @unblock()
             @clear
-            $showFancyBoxMessage(json.message, false)
+            @showFancyBoxMessage(json.message, false)
           else
             window.processLogin()
       })
@@ -320,7 +321,7 @@ class RememberTokenConfirmationBox
   #initialize fancybox and attach click event on each link with class forgot-pass
   initFancybox: () ->
 
-    $('.remember-token').fancybox({
+    $('.resend-email-link').fancybox({
       closeBtn: false,
       padding:0,
       autoSize:false,
@@ -330,7 +331,7 @@ class RememberTokenConfirmationBox
         $("#remembertokenbox input").focus()
       href: '#remembertokenbox' }); #which div to show as fancybox
 
-    $('.remember-token').on "click", (e)=>
+    $('.resend-email-link').on 'click', (e)=>
       @clear()
       $("#remembertokenbox input").val $("#login_form .email input").val()
       e.preventDefault();
@@ -355,54 +356,53 @@ class RememberTokenConfirmationBox
     $('#remembertokenbox input').val('')
 
   formSubmit: (e)->
-      e.preventDefault()
-      if window.LoginBox.blocked
-        return
-      form = $(e.target)
+    e.preventDefault()
+    if window.LoginBox.blocked
+      return
+    form = $(e.target)
 
-      email = form.find('.email input').val()
-      if !@isEmailValid email
-        form.find('.email').addClass('error')
-        form.find('.email .help-inline').html('El email es incorrecto')
+    email = form.find('.email input').val()
+    if !@isEmailValid email
+      form.find('.email').addClass('error')
+      form.find('.email .help-inline').html('El email es incorrecto')
+      $.fancybox.update()
+      return false
+    else
+      form.find('.email').removeClass('error')
+      form.find('.email .help-inline').html()
+      $.fancybox.update()
+
+    # send the request
+    form.find('.other').removeClass('error')
+    form.find("button").attr('disabled', 'disabled')
+    window.LoginBox.block()
+    $.ajax({
+      url: '<%= FancyLogin::Config.confirmation_url %>.jsonp',
+      dataType: "JSONP",
+      timeout: 20000,
+      data: {user: {email: email}},
+
+      # deals with unknown errors
+      error: () =>
+        # re-enable the send button after some unhandled error happened
+        window.LoginBox.unblock()
+        form.find('.other').addClass('error')
+        form.find('.other .help-inline').html("Ocurrió un error, por favor vuelva a intentarlo")
+        form.find("button").removeAttr('disabled');
         $.fancybox.update()
-        return false
-      else
-        form.find('.email').removeClass('error')
-        form.find('.email .help-inline').html()
-        $.fancybox.update()
 
-      # send the request
-      form.find('.other').removeClass('error')
-      form.find("button").attr('disabled', 'disabled')
-      window.LoginBox.block()
-      $.ajax({
-        url: '<%= FancyLogin::Config.confirmation_url %>.jsonp',
-        dataType: "JSONP",
-        timeout: 20000,
-        data: {user: {email: email}},
-
-        # deals with unknown errors
-        error: () =>
-          # re-enable the send button after some unhandled error happened
+      # deals with known response types (included errors from server side)
+      success: (json, textStatus, xOptions) =>
+        # if there was some error, show it to the user and finish
+        if json.status != 200
           window.LoginBox.unblock()
-          form.find('.other').addClass('error')
-          form.find('.other .help-inline').html("Ocurrió un error, por favor vuelva a intentarlo")
           form.find("button").removeAttr('disabled');
+          form.find('.other').addClass('error')
+          form.find('.other .help-inline').html('Dirección de email no registrada')
           $.fancybox.update()
-
-        # deals with known response types (included errors from server side)
-        success: (json, textStatus, xOptions) =>
-          # if there was some error, show it to the user and finish
-          if json.status != 200
-            window.LoginBox.unblock()
-            form.find("button").removeAttr('disabled');
-            form.find('.other').addClass('error')
-            form.find('.other .help-inline').html('Dirección de email no registrada')
-            $.fancybox.update()
-            return
-
-          window.ReloadPage()
-      })
+          return
+        window.ReloadPage()
+    })
 
   isEmailValid: (emailAddress) ->
     pattern = new RegExp /// ^
@@ -448,6 +448,7 @@ window.processLogin = () ->
     $.fancybox.close()
     target    = LoginBox.target # element clicked
     callback  = LoginBox.target.data('login-callback')
+
     #eval is considered to be EVIL, but in this case is totally appropriate since this code always comes from us to the user http://stackoverflow.com/questions/86513/why-is-using-the-javascript-eval-function-a-bad-idea
     # first arg is the context (it's passed implicitly) and the second one is the element that was clicked
     eval(callback).call(this,target);
