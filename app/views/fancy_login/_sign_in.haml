@@ -8,7 +8,7 @@
 
   %h3.centered
     O accede con tu correo electrónico
-  %form#login_form{method: 'post', action: '#'}
+  %form#login_form{method: 'post', action: '#', data: {url: @config.sign_in_url}}
     .email
       .help-inline
       %p
