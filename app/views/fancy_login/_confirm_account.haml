@@ -12,7 +12,7 @@
           Ingrese su dirección de email
         %h2
           Le enviemos un enlace con el activar su cuenta de usuario
-      %form#remembertokenbox-form{method: 'post', action: '#'}
+      %form#remembertokenbox-form{method: 'post', action: '#', data: {url: @config.confirmation_url }}
         .email
           %label{for: '#remembertokenbox-email'} Correo electrónico
           .help-inline
