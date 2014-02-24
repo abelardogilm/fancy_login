@@ -331,7 +331,7 @@ class RememberTokenConfirmationBox
         $("#remembertokenbox input").focus()
       href: '#remembertokenbox' }); #which div to show as fancybox
 
-    $('.resend-email-link').on 'click', (e)=>
+    $('.fancybox-notice').on 'click', '.resend-email-link', (e)=>
       @clear()
       $("#remembertokenbox input").val $("#login_form .email input").val()
       e.preventDefault();
