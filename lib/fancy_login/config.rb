@@ -44,7 +44,7 @@ module FancyLogin
       end
 
       def facebook_url_callback
-        facebook_url + "/callback"
+        url + facebook_url + "/callback"
       end
 
       def reset_password_url
