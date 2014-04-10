@@ -20,19 +20,21 @@ class LoginBox
     $('a.btn-facebook').click (e)=>
       e.preventDefault()
       @clearFacebookError()
+
       FB.login (response) ->
-        if response.authResponse
-          $.ajax
-            url: $(e.currentTarget).attr('href')
-            dataType: "JSONP"
-            timeout: 20000,
-            success: (json) ->
-              window.processLogin()
-            error: ()->
-              window.LoginBox.showFacebookError()
-        else
-          window.LoginBox.showFacebookError()
-      , scope: 'email'
+          if response.authResponse
+            $.ajax
+              url: $(e.currentTarget).attr('href')
+              dataType: "JSONP"
+              timeout: 20000
+              data: {}
+              success: (json) ->
+                window.processLogin()
+              error: (request, status, error)->
+                window.LoginBox.showFacebookError()
+          else
+            window.LoginBox.showFacebookError()
+        ,scope: 'email'
       return false
 
     $("#loginbox input").keyup (e)=>
@@ -298,7 +300,6 @@ class ForgotPassBox
             form.find('.other .help-inline').html('Dirección de email no registrada')
             $.fancybox.update()
             return
-
           window.ReloadPage()
       })
 
