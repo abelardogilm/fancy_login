@@ -7,6 +7,12 @@ class LoginBox
     @show_into_fancybox()
     #since .not-logged-in can be applied to a link or a button
     $(document).on "click", ".not-logged-in", (e)=>
+
+      # Track mixpanel events for login links
+      if $(e.currentTarget).data("event")?
+        mixingpanel_tracker.track $(e.currentTarget).data('event'),
+                                  $(e.currentTarget).data('extraProps')
+
       if @blocked
         return
       LoginBox.target = $(e.target)
