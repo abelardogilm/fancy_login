@@ -5,6 +5,14 @@ class LoginBox
   #Initialize fancybox and attach click event on each link with class not-logged-in
   initFancybox: () ->
     @show_into_fancybox()
+
+    # Add tracking on signout link
+    $(document).on "click", ".signout", (e)=>
+      # Track mixpanel events for logout links
+      if $(e.currentTarget).data("event")?
+        mixingpanel_tracker.track $(e.currentTarget).data('event'),
+                                  $(e.currentTarget).data('extraProps')
+
     #since .not-logged-in can be applied to a link or a button
     $(document).on "click", ".not-logged-in", (e)=>
 
