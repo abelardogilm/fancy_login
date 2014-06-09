@@ -152,6 +152,9 @@ class LoginBox
       # Register form ask for terms and conditions
       if (form_id == "register_form")
         if ( $("#loginbox-terms-and-conditions").is(':checked') == false )
+
+          # Track that T&C caused not sending the message
+          mixingpanel_tracker.track "Email Capture", {"action":"xxx", "location":"fancybox", "url": document.URL }
           form.find('#terms').addClass('error')
           form.find('#terms .help-inline').html('Por favor, acepta las condiciones')
           has_errors = true
@@ -211,8 +214,7 @@ class LoginBox
 
           if json.need_confirm
             # Trying to register with unconfirmed aacount
-            mixingpanel_tracker.track "Login", {"action":"register unsuccessful. needs confirmation", "location":"login fancybox", "url": document.URL }
-
+            mixingpanel_tracker.track "Login", {"action":"register needs confirmation", "location":"login fancybox", "url": document.URL }
             form.find("button").removeAttr('disabled')
             @unblock()
             @clear
