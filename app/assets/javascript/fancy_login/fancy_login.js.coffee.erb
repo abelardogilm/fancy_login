@@ -20,12 +20,12 @@ class LoginBox
       if $(e.currentTarget).data("event")?
         mixingpanel_tracker.track $(e.currentTarget).data('event'),
                                   $(e.currentTarget).data('extraProps')
-
       if @blocked
         return
       LoginBox.target = $(e.target)
       @clear()
       e.preventDefault()
+
 
     $('a.loginbox-close').click (e)->
       e.preventDefault();
@@ -59,8 +59,12 @@ class LoginBox
         return
       @clearField e
     $('#login_form').submit (e) =>
+
+      mixingpanel_tracker.track "Login", {"action":"signin", "location":"login fancybox", "url": document.URL }
       @formSubmit e, $('#login_form').data('url')
+
     $('#register_form').submit (e) =>
+      mixingpanel_tracker.track "Login", {"action":"register", "location":"login fancybox", "url": document.URL }
       @formSubmit e, $('#register_form').data("url")
 
   blocked: false,
@@ -78,7 +82,9 @@ class LoginBox
           $("#register_form .email input").focus()
         else
           $("#login_form .email input").focus()
+
       href: '#loginbox'
+
     }); #which div to show as fancybox
 
   block: =>
@@ -104,7 +110,7 @@ class LoginBox
     if error
       $('#loginbox .fancybox-notice').addClass('error')
     $('#loginbox .fancybox-notice').show()
-    $.fancybox.update()    
+    $.fancybox.update()
 
   clearFancyBoxError: ->
     $('#loginbox .fancybox-notice').removeClass('error')
@@ -179,8 +185,16 @@ class LoginBox
 
         # deals with known response types (included errors from server side)
         success: (json, textStatus, xOptions) =>
+
           # if there was some error, show it to the user and finish
           if json.status != 200
+
+            # Track unsuccesful login / register
+            if $(form).attr("id") == "login_form"
+              mixingpanel_tracker.track "Login", {"action":"signin unsuccessful", "location":"login fancybox", "url": document.URL }
+            else if $(form).attr("id") == "register_form"
+              mixingpanel_tracker.track "Login", {"action":"register unsuccessful", "location":"login fancybox", "url": document.URL }
+
             @unblock()
             form.find("button").removeAttr('disabled')
             if json.user?.errors?.email
@@ -194,13 +208,24 @@ class LoginBox
               form.find('.other .help-inline').html(json.message)
             $.fancybox.update()
             return
+
           if json.need_confirm
+            # Trying to register with unconfirmed aacount
+            mixingpanel_tracker.track "Login", {"action":"register unsuccessful. needs confirmation", "location":"login fancybox", "url": document.URL }
+
             form.find("button").removeAttr('disabled')
             @unblock()
             @clear
             @showFancyBoxMessage(json.message, false)
+
           else
+            # Track succesful login / register
+            if $(form).attr("id") == "login_form"
+              mixingpanel_tracker.track "Login", {"action":"signin success", "location":"login fancybox", "url": document.URL }
+            else if $(form).attr("id") == "register_form"
+              mixingpanel_tracker.track "Login", {"action":"register success", "location":"login fancybox", "url": document.URL }
             window.processLogin()
+
       })
 
   clear: () ->
