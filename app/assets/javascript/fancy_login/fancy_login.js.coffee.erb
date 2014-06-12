@@ -59,12 +59,17 @@ class LoginBox
         return
       @clearField e
     $('#login_form').submit (e) =>
-
-      mixingpanel_tracker.track "Login", {"action":"signin", "location":"login fancybox", "url": document.URL }
+      mixingpanel_tracker.track "Login",
+        action: "signin"
+        location: "login fancybox"
+        url: document.URL
       @formSubmit e, $('#login_form').data('url')
 
     $('#register_form').submit (e) =>
-      mixingpanel_tracker.track "Login", {"action":"register", "location":"login fancybox", "url": document.URL }
+      mixingpanel_tracker.track "Login",
+        action: "register"
+        location: "login fancybox"
+        url: document.URL
       @formSubmit e, $('#register_form').data("url")
 
   blocked: false,
@@ -191,9 +196,15 @@ class LoginBox
 
             # Track unsuccesful login / register
             if $(form).attr("id") == "login_form"
-              mixingpanel_tracker.track "Login", {"action":"signin unsuccessful", "location":"login fancybox", "url": document.URL }
+              mixingpanel_tracker.track "Login",
+                action: "signin unsuccessful"
+                location: "login fancybox"
+                url: document.URL
             else if $(form).attr("id") == "register_form"
-              mixingpanel_tracker.track "Login", {"action":"register unsuccessful", "location":"login fancybox", "url": document.URL }
+              mixingpanel_tracker.track "Login",
+                action: "register unsuccessful"
+                location: "login fancybox"
+                url: document.URL
 
             @unblock()
             form.find("button").removeAttr('disabled')
@@ -211,7 +222,10 @@ class LoginBox
 
           if json.need_confirm
             # Trying to register with unconfirmed aacount
-            mixingpanel_tracker.track "Login", {"action":"register needs confirmation", "location":"login fancybox", "url": document.URL }
+            mixingpanel_tracker.track "Login",
+              action: "register needs confirmation"
+              location: "login fancybox"
+              url: document.URL
 
             form.find("button").removeAttr('disabled')
             @unblock()
@@ -219,11 +233,6 @@ class LoginBox
             @showFancyBoxMessage(json.message, false)
 
           else
-            # Track succesful login / register
-            if $(form).attr("id") == "login_form"
-              mixingpanel_tracker.track "Login", {"action":"signin success", "location":"login fancybox", "url": document.URL }
-            else if $(form).attr("id") == "register_form"
-              mixingpanel_tracker.track "Login", {"action":"register success", "location":"login fancybox", "url": document.URL }
             window.processLogin()
 
       })
