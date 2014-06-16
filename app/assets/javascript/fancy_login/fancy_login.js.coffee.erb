@@ -190,21 +190,16 @@ class LoginBox
 
         # deals with known response types (included errors from server side)
         success: (json, textStatus, xOptions) =>
+          action = if $(form).attr("id") == "register_form" then "register" else "signin"
 
           # if there was some error, show it to the user and finish
           if json.status != 200
 
             # Track unsuccesful login / register
-            if $(form).attr("id") == "login_form"
-              mixingpanel_tracker.track "Login",
-                action: "signin unsuccessful"
-                location: "login fancybox"
-                url: document.URL
-            else if $(form).attr("id") == "register_form"
-              mixingpanel_tracker.track "Login",
-                action: "register unsuccessful"
-                location: "login fancybox"
-                url: document.URL
+            mixingpanel_tracker.track "Login",
+              action: "#{action} unsuccessful"
+              location: "login fancybox"
+              url: document.URL
 
             @unblock()
             form.find("button").removeAttr('disabled')
@@ -223,7 +218,7 @@ class LoginBox
           if json.need_confirm
             # Trying to register with unconfirmed aacount
             mixingpanel_tracker.track "Login",
-              action: "register needs confirmation"
+              action: "#{action} needs confirmation"
               location: "login fancybox"
               url: document.URL
 
@@ -233,7 +228,12 @@ class LoginBox
             @showFancyBoxMessage(json.message, false)
 
           else
-            window.processLogin()
+            mixingpanel_tracker.track "Login",
+              action: "#{action} successful"
+              location: "login fancybox"
+              url: document.URL
+            , ->
+              window.processLogin()
 
       })
 
