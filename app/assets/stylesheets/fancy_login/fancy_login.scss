@@ -1,4 +1,5 @@
-@import "compass";                    //General compass mixins
+@import "compass";
+@import "mediaqueries";
 
 $purple:  #7B1C76;
 $purple-text: #861f82;
@@ -6,13 +7,116 @@ $lightgray: #f2f2f2;
 $red-error-text: #B94A48;
 $secondary: #eeaf00;//orange
 
+@mixin input-placeholder {
+  &.placeholder { @content; }
+  &:-moz-placeholder { @content; }
+  &::-moz-placeholder { @content; }
+  &:-ms-input-placeholder { @content; }
+  &::-webkit-input-placeholder { @content; }
+}
 
-.modalbox {
+.modalbox{
+  @include pie-clearfix;
   width: 100%;
   height: 100%;
-  background: $lightgray;
-  @include pie-clearfix;
   @include border-radius(4px 4px 0px 0px);
+  background: $lightgray;
+
+  .modal-header{
+    position:relative;
+    width: 100%;
+    overflow: hidden;
+    margin-bottom: .5em;
+    @include border-radius(4px 4px 0px 0px);
+    background: $purple;
+    h1{
+      width:80%;
+      color: #fff;
+      font: normal 1.5em/1em Arial, Helvetica, sans-serif;
+      padding:0;
+    }
+
+    .close-btn{
+      position: absolute;
+      right:1em;
+      top: .7em;
+      width: 2em;
+      height: 2em;
+      padding: .5em 0 0 .6em;
+      @include border-radius(50%);
+      color:#fff;
+      background: shade($purple,30);
+      font: normal 1em/1em Arial, Helvetica, sans-serif;
+
+      &:hover {
+        text-decoration: none;
+        color: shade($purple,10);
+      }
+    }
+  }
+
+  .login-content{
+    margin: 0 1em 3em;
+    padding-top: 1em;
+    overflow: hidden;
+  }
+
+  .loginbox-col{
+    background: #fff;
+    padding: .5em 1em;
+    border-bottom: 1px shade($lightgray,10) solid;
+    margin-bottom: 2em;
+    @include tablet-landscape-and-up{
+      float:left;
+      width: 49%;
+      margin-right: 2%;
+      margin-bottom: 0;
+      &:nth-of-type(2n){
+        margin-right: 0;
+      }
+    }
+  }
+
+  h2 {
+    width: 100%;
+    margin: 0 auto 1em auto;
+    padding: .2em;
+    text-align: center;
+    color: #888;
+    font: 200 1.3em Arial, Helvetica, sans-serif;
+    border-bottom: 1px shade($lightgray,8) solid;
+  }
+
+  .additional-note{
+    color: shade($lightgray,35);
+    font-size: .9em;
+  }
+
+  form{
+    border-bottom: 1px shade($lightgray,8) solid;
+    input{
+      @include input-placeholder {
+        color: #e5e5e5;
+        font-style: italic;
+        font-size: 1em;
+      }
+    }
+  }
+  .forgot-password-wrapper{
+    margin: 1em auto;
+    text-align: center;
+  }
+  .forgot-pass {
+    margin: 1em auto;
+    font-size: .9em;
+  }
+  .facebook-access-wrapper{
+    margin: 1em auto;
+    .additional-note{
+      margin-bottom: .6em;
+    }
+  }
+
 
   .spinner {
     position: fixed;
@@ -45,77 +149,35 @@ $secondary: #eeaf00;//orange
       cursor: pointer;
     }
   }
-  .modal-header{
-    position:relative;
-    height: 4.5em;
-    width: 100%;
-    overflow: hidden;
-    margin-bottom: 1.45em;
-    @include border-radius(4px 4px 0px 0px);
-    background: $purple;
-    h1{
-      width:80%;
-      color: #fff;
-      font: normal 2.6em/2.6em Arial, Helvetica, sans-serif;
-      padding:0;
-      margin:-0.4em auto auto .6em;
-    }
-
-    .close-btn{
-      display: block;
-      position: absolute;
-      right:0.9em;
-      top:0;
-      color:#fff;
-      width:20px;
-      height:40px;
-      font: normal 2em/2em Arial, Helvetica, sans-serif;
-
-      &:hover {
-        text-decoration: none;
-        color: $secondary;
-      }
-    }
-  }
 
   .centered {
     text-align: center;
   }
 
-  h2 {
-    font: normal 2.2em Arial, Helvetica, sans-serif;
-    text-align: center;
-    margin: 0 0 0.3em 0;
-  }
 
-  .loginbox-col{
-    width: 47%;
-    padding:.2em .6em;
-  }
+  // #loginbox-sign-in{
+  //   margin-left:0.8em;
+  //   float: left;
+  //   background:#fff;
 
-  #loginbox-sign-in{
-    margin-left:0.8em;
-    float: left;
-    background:#fff;
+  //   button[type='submit'] {
+  //     background-color: $purple-text;
+  //     border-color:$purple-text;
+  //     text-transform: none;
+  //     font-size: 0.8em;
+  //     padding: 0 2.5em;
+  //     height: 3.8em;
+  //   }
+  // }
 
-    button[type='submit'] {
-      background-color: $purple-text;
-      border-color:$purple-text;
-      text-transform: none;
-      font-size: 0.8em;
-      padding: 0 2.5em;
-      height: 3.8em;
-    }
-  }
+  // #loginbox-sign-up{
+  //   margin: 0 1.2em 1em 0;
+  //   float: right;
 
-  #loginbox-sign-up{
-    margin: 0 1.2em 1em 0;
-    float: right;
-
-    form {
-      margin: 0 1em 0 1em;
-    }
-  }
+  //   form {
+  //     margin: 0 1em 0 1em;
+  //   }
+  // }
 
   &#forgotpassbox, &#remembertokenbox {
     .wrapper {
@@ -137,11 +199,6 @@ $secondary: #eeaf00;//orange
     background-image:none;
   }
 
-  .btn-facebook {
-    background-color: #578ee8;
-    height: 3.5em;
-    padding: 1em 1em 0 3em;
-  }
 
   .help-inline {
     display: none;
@@ -165,6 +222,7 @@ $secondary: #eeaf00;//orange
   }
 
   #terms{
+    margin-bottom: 1em;
     input, label{
       display: inline;
       margin:0;
@@ -172,17 +230,11 @@ $secondary: #eeaf00;//orange
     }
   }
 
-  .forgot-pass {
-    color: $purple-text;
-    font-size: 0.8em;
-    margin-left: 1em;
-  }
 
   .resend-token-link{
     text-decoration: underline;
     cursor: pointer;
   }
-}
 
 
-
+}//modal-box

@@ -72,11 +72,18 @@ class LoginBox
   show_into_fancybox: () ->
     $('.not-logged-in').fancybox({
       closeBtn: false,
-      padding:0,
-      autoSize:false,
       enableEscapeButton:true,
-      width:'60%',
-      height: 'auto',
+
+      padding:0,
+      # autoSize:false,
+      # width:'100%',
+      # height: 'auto',
+
+      openEffect: 'elastic',
+      closeEffect: 'elastic',
+      fitToView: true, # images won't be scaled to fit to browser's height
+      maxWidth: "800px", # images won't exceed the browser's width
+
       afterShow: () =>
         if LoginBox.target?.hasClass('not-registered')
           $("#register_form .email input").focus()

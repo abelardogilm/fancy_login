@@ -7,11 +7,12 @@
           = "Entra en #{@config.app_name}"
         %a.loginbox-close.close-btn{href: '#', rel: 'nofollow'}
           X
+      .login-content
 
-      = render 'fancy_login/notifications'
+        = render 'fancy_login/notifications'
 
-      = render 'fancy_login/sign_in'
-      = render 'fancy_login/sign_up'
+        = render 'fancy_login/sign_in'
+        = render 'fancy_login/sign_up'
 
     = render 'fancy_login/reset_password' if @config.user["has_reset_password"]
     = render 'fancy_login/confirm_account' if @config.user["has_confirmation"]
