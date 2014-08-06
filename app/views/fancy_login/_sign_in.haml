@@ -1,8 +1,7 @@
-#loginbox-sign-in.loginbox-col
-  %h2
-    = "Accede a #{@config.app_name}"
-
+#loginbox-sign-in
   %form#login_form{method: 'post', action: '#', data: {url: @config.sign_in_url}}
+    %h2
+      Entra con tu cuenta de #{@config.app_name}
     .email.form-group
       .help-inline
       %input#loginbox-email.form-control{autofocus: 'autofocus', name: 'user[email]', placeholder: 'Correo electrónico', size: '30', title: 'Obligatorio', type: 'text', value: ''}
@@ -11,19 +10,31 @@
       .help-inline
       %input#loginbox-pass.form-control{name: 'user[password]', placeholder: 'Contraseña', maxlength: '30', type: 'password'}
 
+    - if @config.user["has_reset_password"]
+      .forgot-password-wrapper
+        %a.forgot-pass{href: '#', rel: 'nofollow'}
+          Recupera tu contraseña
+
     .other
       .help-inline
 
 
-    %button.btn.btn-success.btn-block.form-control{type: 'submit'}
+    %button.btn.button-green.btn-block{type: 'submit'}
       Iniciar Sesión
-    - if @config.user["has_reset_password"]
-      .forgot-password-wrapper
-        %a.forgot-pass{href: '#', rel: 'nofollow'}
-          ¿Has olvidado tu contraseña?
 
 
   .facebook-access-wrapper
-    .additional-note
-      O accede con tu cuenta de Facebook
+    %h2
+      Con tu cuenta de Facebook
     = render 'fancy_login/sign_in_facebook' if @config.user["has_facebook_login"]
+    .micro-note
+      (Kelisto nunca publicará en tu muro sin tu permiso)
+
+
+  .alternative-action.additional-note
+    ¿Todavía no tienes la cuenta de <b>kelisto</b>?
+    %a.js-switch-action{href: '#signup', rel: 'nofollow', title:"Crea tu cuenta de Kelisto"}
+      Regístrate
+    .micro-note
+      (Tardarás menos de un minuto)
+
