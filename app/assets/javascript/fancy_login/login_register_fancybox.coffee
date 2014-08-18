@@ -255,7 +255,7 @@ class @LoginBox
 
           if json.need_confirm
             # Trying to register with unconfirmed aacount
-            mixingpanel_tracker.track "Login", {"action":"register needs confirmation", "location":"login fancybox", "url": document.URL }
+            mixingpanel_tracker.track "Register", {"action":"register needs confirmation", "location":"login fancybox", "url": document.URL }
             form.find("button").removeAttr('disabled')
             @constructor.unblock()
             @clear
