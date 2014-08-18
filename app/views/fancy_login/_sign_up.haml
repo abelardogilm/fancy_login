@@ -1,7 +1,17 @@
 #loginbox-sign-up
+  %h6
+    Crea tu cuenta en #{@config.app_name}
+
+  .facebook-access-wrapper
+    = render 'fancy_login/sign_up_facebook' if @config.user["has_facebook_login"]
+  .google-access-wrapper
+    = render 'fancy_login/sign_up_google' if @config.user["has_google_login"]
+
+  .micro-note
+    (Kelisto nunca publicará en tu muro sin tu permiso)
+
   %form#register_form{method: 'post', action: '#', data: {url: @config.sign_up_url}}
-    %h2
-      Crea la cuenta
+    .or-line o bien
     .email.form-group
       .help-inline
       %input#register-email.form-control{autofocus: 'autofocus', name: 'user[email]', placeholder: 'Correo electrónico', size: '30', title: 'Obligatorio', type: 'text', value: ''}
@@ -23,11 +33,6 @@
 
     %button.btn.button-green.btn-large.btn-block{type: 'submit'}
       Crear cuenta
-
-  .facebook-access-wrapper
-    .additional-note
-      O regístrate con tu cuenta de Facebook
-    = render 'fancy_login/sign_up_facebook' if @config.user["has_facebook_login"]
 
   .alternative-action.additional-note
     ¿Ya tienes la cuenta creada?

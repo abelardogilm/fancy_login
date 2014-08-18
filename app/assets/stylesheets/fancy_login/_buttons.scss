@@ -1,0 +1,44 @@
+@import "compass";
+$red-google: #DF4B31;
+$blue-facebook: #3b5998;
+
+.modalbox{
+  .btn {
+    padding: 0.5em;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-family:'Raleway', Arial, sans-serif;
+  }
+  .btn-facebook{
+    color: #ffffff;
+    background-color: $blue-facebook;
+    .icon-facebook{ margin-right:1em;}
+
+    @include border-radius(0.2em);
+    border: 2px solid transparent;
+    border-right-color: darken($blue-facebook, 15%);
+    border-bottom-color: darken($blue-facebook, 15%);
+
+    &:hover {
+      border: 2px solid transparent;
+    }
+
+    &:active,
+    &.active {
+      background-color: #0d2456 \9;
+    }
+  }
+
+
+  .btn-google {
+    background-color: $red-google;
+    border: 2px solid transparent;
+    border-right-color: darken($red-google, 15%);
+    border-bottom-color: darken($red-google, 15%);
+    @include border-radius(0.2em);
+    &:hover {
+      border: 2px solid transparent
+    }
+    .icon-googleplus{ margin-right:1em;}
+  }
+}

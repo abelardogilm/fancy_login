@@ -1,7 +1,16 @@
 #loginbox-sign-in
+  %h6
+    Inicia sesión en #{@config.app_name}
+
+  .facebook-access-wrapper
+    = render 'fancy_login/sign_in_facebook' if @config.user["has_facebook_login"]
+  .google-access-wrapper
+    = render 'fancy_login/sign_in_google' if @config.user["has_google_login"]
+
+  
   %form#login_form{method: 'post', action: '#', data: {url: @config.sign_in_url}}
-    %h2
-      Entra con tu cuenta de #{@config.app_name}
+    .or-line o bien
+      
     .email.form-group
       .help-inline
       %input#loginbox-email.form-control{autofocus: 'autofocus', name: 'user[email]', placeholder: 'Correo electrónico', size: '30', title: 'Obligatorio', type: 'text', value: ''}
@@ -23,18 +32,10 @@
       Iniciar Sesión
 
 
-  .facebook-access-wrapper
-    %h2
-      Con tu cuenta de Facebook
-    = render 'fancy_login/sign_in_facebook' if @config.user["has_facebook_login"]
-    .micro-note
-      (Kelisto nunca publicará en tu muro sin tu permiso)
-
-
   .alternative-action.additional-note
-    ¿Todavía no tienes la cuenta de <b>kelisto</b>?
+    ¿Todavía no tienes cuenta de <b>Kelisto</b>?
     %a.js-switch-action{href: '#signup', rel: 'nofollow', title:"Crea tu cuenta de Kelisto"}
-      Regístrate
+      Regístrate ahora
     .micro-note
       (Tardarás menos de un minuto)
 

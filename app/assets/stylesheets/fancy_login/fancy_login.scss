@@ -1,6 +1,7 @@
 @import "compass";
 @import "mediaqueries";
 @import "animate";
+@import "buttons";
 
 $purple:  #7B1C76;
 $purple-text: #861f82;
@@ -50,7 +51,7 @@ $blue:          #79c8f0;
 
     @include border-radius(4px 4px 0px 0px);
     background: $blue;
-    h1{
+    h5{
       width:80%;
       color: #fff;
       font: normal 1.2em/1em 'Open-Sans', Helvetica, sans-serif;
@@ -81,9 +82,6 @@ $blue:          #79c8f0;
 
   .login-content{
 
-    #loginbox-sign-in, #loginbox-sign-up{
-      padding-bottom: 8em;
-    }
     #loginbox-sign-in{
 
     }
@@ -101,9 +99,8 @@ $blue:          #79c8f0;
 
 
 
-  h2 {
-    width: 100%;
-    margin: 0 auto 1em auto;
+  h6 {
+    margin: 0.5em 1em 1em 1em;
     padding: .2em;
     text-align: center;
     color: shade(#fff,40);
@@ -119,10 +116,42 @@ $blue:          #79c8f0;
     @extend .additional-note;
     font-size: .8em;
     font-style: italic;
+    text-align: center;
+  }
+
+  .or-line {
+    display: block;
+    position: relative;
+    text-align: center;
+    width: 100%;
+    z-index: 1;
+    margin-bottom: 1.5em;
+    color: shade(#fff,40);
+    font-size: 0.85em;
+    &:before {
+      width: 60px;
+      height: 10px;
+      background: shade(#fff,5);
+      content: '';
+      margin: -5px 0 0 -30px;
+      left: 50%;
+      position: absolute;
+      top: 50%;
+      z-index: -1;
+    }
+    &:after {
+      border-bottom: 1px solid shade($lightgray,8);
+      content: '';
+      display: block;
+      position: absolute;
+      top: 49%;
+      width: 100%;
+      z-index: -2;
+    }
   }
 
   form{
-    background: shade(#fff,1);
+    // background: shade(#fff,1);
     padding: .8em 1.5em;
     border-bottom: 1px shade($lightgray,8) solid;
     input{
@@ -152,18 +181,20 @@ $blue:          #79c8f0;
     margin: 1em auto;
     padding: 0 1em;
     text-align: center;
-
-
+    .additional-note {
+      padding-bottom: 0.5em;
+    }
+  }
+  .google-access-wrapper {
+    margin: 1em auto;
+    padding: 0 1em;
+    text-align: center;
   }
   .alternative-action{
     width: 100%;
-    position:absolute;
-    bottom: 0;
-    left: 0;
     padding:1em;
     text-align: center;
     background: #fff;
-    border-top: 1px shade(#fff, 8) solid;
     a{
       margin: 1em auto;
       display: block;

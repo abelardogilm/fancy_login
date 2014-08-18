@@ -58,6 +58,11 @@ class @LoginBox
         ,scope: 'email'
       return false
 
+    $('a.btn-google').click (e)=>
+      e.preventDefault()
+      @showFancyBoxMessage('¡Ops! Esta función todavía no está disponible.', true)
+      return false
+
     $("#loginbox input").keyup (e)=>
       if e.keyCode == 27 # close dialog on <Esc>
         $.fancybox.close()
@@ -71,7 +76,7 @@ class @LoginBox
       @formSubmit e, $('#login_form').data('url')
 
     $('#register_form').submit (e) =>
-      mixingpanel_tracker.track "Login", {"action":"register", "location":"login fancybox", "url": document.URL }
+      mixingpanel_tracker.track "Register", {"action":"register", "location":"login fancybox", "url": document.URL }
       @formSubmit e, $('#register_form').data("url")
 
   blocked: false,
@@ -114,8 +119,9 @@ class @LoginBox
 
 
   attachSwitchLoginRegisterHandler: ()->
-    $(".js-switch-action").on "click", ()->
-      target = $(this).attr("href")
+    $(".js-switch-action").on "click", (e) =>
+      @clearFancyBoxError()
+      target = $(e.target).attr("href")
       if target is "#signup"
         $("#loginbox-sign-in").slideUp ()->
           $("#loginbox-sign-up").slideDown()
