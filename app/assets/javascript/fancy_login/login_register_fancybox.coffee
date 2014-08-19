@@ -60,7 +60,7 @@ class @LoginBox
 
     $('a.btn-google').click (e)=>
       e.preventDefault()
-      @showFancyBoxMessage('¡Ops! Esta función todavía no está disponible.', true)
+      @showFancyBoxMessage('¡Ops! Esta función todavía no está disponible.', false)
       return false
 
     $("#loginbox input").keyup (e)=>
@@ -92,7 +92,7 @@ class @LoginBox
       padding:0,
       # autoSize:false,
       # width:'100%',
-      # height: 'auto',
+      height: 'auto',
 
       # Open/close methods are custom defined in shared...
       openMethod : 'dropIn',
@@ -195,7 +195,7 @@ class @LoginBox
         if ( $("#loginbox-terms-and-conditions").is(':checked') == false )
 
           # Track that T&C caused not sending the message
-          mixingpanel_tracker.track "Email Capture", {"action":"xxx", "location":"fancybox", "url": document.URL }
+          # mixingpanel_tracker.track "Email Capture", {"action":"xxx", "location":"fancybox", "url": document.URL }
           form.find('#terms').addClass('error')
           form.find('#terms .help-inline').html('Por favor, acepta las condiciones')
           has_errors = true
