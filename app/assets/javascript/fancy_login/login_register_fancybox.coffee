@@ -11,17 +11,14 @@ class @LoginBox
     @attachSwitchLoginRegisterHandler()
 
     # Add tracking on signout link
-    $(document).on "click", ".signout", (e)=>
+    $(document).on "click", ".signout", (e) =>
       # Track mixpanel events for logout links
       if $(e.currentTarget).data("event")?
         mixingpanel_tracker.track $(e.currentTarget).data('event'),
                                   $(e.currentTarget).data('extraProps')
 
-
-
     #since .not-logged-in can be applied to a link or a button
-    $(document).on "click", ".not-logged-in", (e)=>
-
+    $(document).on "click", ".not-logged-in", (e) =>
       # Track mixpanel events for login links
       if $(e.currentTarget).data("event")?
         mixingpanel_tracker.track $(e.currentTarget).data('event'),
@@ -33,12 +30,11 @@ class @LoginBox
       e.preventDefault()
       @clear()
 
-
-    $('a.loginbox-close').click (e)->
+    $('a.loginbox-close').click (e) ->
       e.preventDefault();
       $.fancybox.close();
 
-    $('a.btn-facebook').click (e)=>
+    $('a.btn-facebook').click (e) =>
       e.preventDefault()
       @clearFacebookError()
 
@@ -58,20 +54,20 @@ class @LoginBox
         ,scope: 'email'
       return false
 
-    $('a.btn-google').click (e)=>
+    $('a.btn-google').click (e) =>
       e.preventDefault()
       @showFancyBoxMessage('¡Ops! Esta función todavía no está disponible.', false)
       return false
 
-    $("#loginbox input").keyup (e)=>
+    $("#loginbox input").keyup (e) =>
       if e.keyCode == 27 # close dialog on <Esc>
         $.fancybox.close()
         return
       else if e.keyCode == 13 # don't clear error on <Enter>
         return
       @clearField e
-    $('#login_form').submit (e) =>
 
+    $('#login_form').submit (e) =>
       mixingpanel_tracker.track "Login", {"action":"signin", "location":"login fancybox", "url": document.URL }
       @formSubmit e, $('#login_form').data('url')
 
@@ -82,27 +78,23 @@ class @LoginBox
   blocked: false,
 
   show_into_fancybox: () =>
-
     @clear()
 
-    $('.not-logged-in').fancybox({
-      closeBtn: false,
-      enableEscapeButton:true,
-
-      padding:0,
-      # autoSize:false,
-      # width:'100%',
-      height: 'auto',
-
-      # Open/close methods are custom defined in shared...
-      openMethod : 'dropIn',
-      openSpeed : 300,
-      closeMethod : 'dropOut',
+    $('.not-logged-in').fancybox
+      href: '#loginbox'
+      closeBtn: false
+      enableEscapeButton:true
+      padding:0
+      autoSize:false
+      width: 270
+      height: 'auto'
+      autoHeight: true
+      openMethod : 'dropIn'
+      openSpeed : 300
+      closeMethod : 'dropOut'
       closeSpeed : 200
-
-      fitToView: true, # images won't be scaled to fit to browser's height
-      maxWidth: "500px", # images won't exceed the browser's width
-
+      fitToView: true  # images won't be scaled to fit to browser's height
+      maxWidth: "500px" # images won't exceed the browser's width
       beforeShow: ()->
         if $(@element).hasClass('not-registered')
           $("#loginbox-sign-in").css("display","none")
@@ -111,25 +103,17 @@ class @LoginBox
         else
           $("#loginbox-sign-up").css("display","none")
           $("#loginbox-sign-in").css("display","block")
-      href: '#loginbox'
-
-    }); #which div to show as fancybox
-
-
-
 
   attachSwitchLoginRegisterHandler: ()->
     $(".js-switch-action").on "click", (e) =>
       @clearFancyBoxError()
       target = $(e.target).attr("href")
       if target is "#signup"
-        $("#loginbox-sign-in").slideUp ()->
+        $("#loginbox-sign-in").slideUp ->
           $("#loginbox-sign-up").slideDown()
       else if target is "#signin"
-        $("#loginbox-sign-up").slideUp ()->
+        $("#loginbox-sign-up").slideUp ->
           $("#loginbox-sign-in").slideDown()
-
-
 
   @block: =>
     @blocked = true
@@ -160,7 +144,7 @@ class @LoginBox
 
   # Login form submit VALIDATION SHOULD HAVE BEEN DONE USING jQVALIDATOR!!! :(
   # This form submit is used both for login and registration
-  formSubmit: (e, url)=>
+  formSubmit: (e, url) =>
       e.preventDefault()
       if @constructor.blocked
         return false
