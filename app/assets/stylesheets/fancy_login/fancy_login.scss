@@ -114,9 +114,10 @@ $blue:          #79c8f0;
   }
   .micro-note{
     @extend .additional-note;
-    font-size: .8em;
+    font-size: .7em;
     font-style: italic;
     text-align: center;
+    padding: 0 .5em;
   }
 
   .or-line {
