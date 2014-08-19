@@ -56,7 +56,7 @@ class @LoginBox
 
     $('a.btn-google').click (e) =>
       e.preventDefault()
-      @showFancyBoxMessage('¡Ops! Esta función todavía no está disponible.', false)
+      @showFancyBoxMessage('¡Ops! Esta función todavía no está disponible.', true)
       return false
 
     $("#loginbox input").keyup (e) =>
