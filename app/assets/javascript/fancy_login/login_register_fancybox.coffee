@@ -266,7 +266,7 @@ class @LoginBox
             if $(form).attr("id") == "login_form"
               mixingpanel_tracker.track "Login", {"action":"signin success", "location":"login fancybox", "url": document.URL }
             else if $(form).attr("id") == "register_form"
-              mixingpanel_tracker.track "Login", {"action":"register success", "location":"login fancybox", "url": document.URL }
+              mixingpanel_tracker.track "Register", {"action":"register success", "location":"login fancybox", "url": document.URL }
             window.processLogin()
 
       })
