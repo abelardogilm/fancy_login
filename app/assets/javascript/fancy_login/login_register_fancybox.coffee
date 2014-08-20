@@ -71,6 +71,9 @@ class @LoginBox
       mixingpanel_tracker.track "Login", {"action":"signin", "location":"login fancybox", "url": document.URL }
       @formSubmit e, $('#login_form').data('url')
 
+    $('#loginbox-sign-in .btn-facebook').click (e) =>
+      mixingpanel_tracker.track "Login", {"action":"signin with facebook", "location":"login fancybox", "url": document.URL }
+
     $('#register_form').submit (e) =>
       mixingpanel_tracker.track "Register", {"action":"register", "location":"login fancybox", "url": document.URL }
       @formSubmit e, $('#register_form').data("url")
