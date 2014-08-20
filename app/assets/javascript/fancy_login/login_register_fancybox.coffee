@@ -74,9 +74,18 @@ class @LoginBox
     $('#loginbox-sign-in .btn-facebook').click (e) =>
       mixingpanel_tracker.track "Login", {"action":"signin with facebook", "location":"login fancybox", "url": document.URL }
 
+    $('#loginbox-sign-in .btn-google').click (e) =>
+      mixingpanel_tracker.track "Login", {"action":"signin with google", "location":"login fancybox", "url": document.URL }
+
     $('#register_form').submit (e) =>
       mixingpanel_tracker.track "Register", {"action":"register", "location":"login fancybox", "url": document.URL }
       @formSubmit e, $('#register_form').data("url")
+
+    $('#loginbox-sign-up .btn-facebook').click (e) =>
+      mixingpanel_tracker.track "Register", {"action":"register with facebook", "location":"login fancybox", "url": document.URL }
+
+    $('#loginbox-sign-up .btn-google').click (e) =>
+      mixingpanel_tracker.track "Register", {"action":"register with google", "location":"login fancybox", "url": document.URL }
 
   blocked: false,
 
