@@ -9,6 +9,7 @@ $lightgray: #f2f2f2;
 $red-error-text: #ea5958;
 $secondary: #eeaf00;//orange
 $blue:          #79c8f0;
+$modal-background: #f8f9fa;
 
 @mixin input-placeholder {
   &.placeholder { @content; }
@@ -40,7 +41,7 @@ $blue:          #79c8f0;
   width: 100%;
   height: 100%;
   @include border-radius(4px 4px 0px 0px);
-  background: #f8f9fa;
+  background: $modal-background;
 
   // font: normal 1.2em/1em 'Open-Sans', Helvetica, sans-serif;
 
@@ -96,22 +97,11 @@ $blue:          #79c8f0;
     }
   }
 
-
-
-
-  h6 {
-    margin: 0.5em 1em 1em 1em;
-    padding: .2em;
-    text-align: center;
-    color: shade(#fff,40);
-    font: 200 1.2em Arial, Helvetica, sans-serif;
-    border-bottom: 1px shade($lightgray,8) solid;
-  }
-
   .additional-note{
     color: shade($lightgray,35);
     font-size: .9em;
   }
+  
   .micro-note{
     @extend .additional-note;
     font-size: .7em;
@@ -130,11 +120,11 @@ $blue:          #79c8f0;
     color: shade(#fff,40);
     font-size: 0.85em;
     &:before {
-      width: 60px;
+      width: 120px;
       height: 10px;
-      background: shade(#fff,5);
+      background: $modal-background;
       content: '';
-      margin: -5px 0 0 -30px;
+      margin: -5px 0 0 -60px;
       left: 50%;
       position: absolute;
       top: 50%;

@@ -86,15 +86,17 @@ class @LoginBox
       enableEscapeButton:true
       padding:0
       autoSize:false
-      width: 270
+      width: 330
       height: 'auto'
       autoHeight: true
-      openMethod : 'dropIn'
-      openSpeed : 300
-      closeMethod : 'dropOut'
-      closeSpeed : 200
+      openMethod: 'dropIn'
+      openSpeed: 300
+      closeMethod: 'dropOut'
+      closeSpeed: 200
       fitToView: true  # images won't be scaled to fit to browser's height
       maxWidth: "500px" # images won't exceed the browser's width
+      helpers:
+        title: null
       beforeShow: ()->
         if $(@element).hasClass('not-registered')
           $("#loginbox-sign-in").css("display","none")
@@ -110,9 +112,11 @@ class @LoginBox
       target = $(e.target).attr("href")
       if target is "#signup"
         $("#loginbox-sign-in").slideUp ->
+          $('#loginbox-header h5').text("Inicia sesión en #{$('#loginbox-header h5').data('appName')}")
           $("#loginbox-sign-up").slideDown()
       else if target is "#signin"
         $("#loginbox-sign-up").slideUp ->
+          $('#loginbox-header h5').text("Regístrate en #{$('#loginbox-header h5').data('appName')}")
           $("#loginbox-sign-in").slideDown()
 
   @block: =>

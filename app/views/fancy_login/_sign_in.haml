@@ -1,7 +1,4 @@
 #loginbox-sign-in
-  %h6
-    Inicia sesión en #{@config.app_name}
-
   .facebook-access-wrapper
     = render 'fancy_login/sign_in_facebook' if @config.user["has_facebook_login"]
   .google-access-wrapper
@@ -9,7 +6,7 @@
 
   
   %form#login_form{method: 'post', action: '#', data: {url: @config.sign_in_url}}
-    .or-line o bien
+    .or-line o bien, con tu email
       
     .email.form-group
       .help-inline
@@ -29,11 +26,11 @@
 
 
     %button.btn.button-green.btn-block{type: 'submit'}
-      Iniciar Sesión
+      Entrar
 
 
   .alternative-action.additional-note
-    ¿Todavía no tienes cuenta de <b>Kelisto</b>?
+    ¿No estás registrado?
     %a.js-switch-action{href: '#signup', rel: 'nofollow', title:"Crea tu cuenta de Kelisto"}
       Regístrate ahora
     .micro-note

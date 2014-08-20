@@ -2,8 +2,8 @@
   %div{style: 'display:none'}
     #loginbox.modalbox
       #loginbox-header.modal-header
-        %h5
-          = "Entra en #{@config.app_name}"
+        %h5{data: {app_name: @config.app_name}}
+          = "Inicia sesión en #{@config.app_name}"
         %a.loginbox-close.close-btn{href: '#', rel: 'nofollow', title:"Cerrar"}
           %i.icon-error
       .login-content

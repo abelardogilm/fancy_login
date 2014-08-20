@@ -1,7 +1,4 @@
 #loginbox-sign-up
-  %h6
-    Crea tu cuenta en #{@config.app_name}
-
   .facebook-access-wrapper
     = render 'fancy_login/sign_up_facebook' if @config.user["has_facebook_login"]
   .google-access-wrapper
@@ -11,7 +8,7 @@
     (Kelisto nunca publicará en tu muro sin tu permiso)
 
   %form#register_form{method: 'post', action: '#', data: {url: @config.sign_up_url}}
-    .or-line o bien
+    .or-line o bien, con tu email
     .email.form-group
       .help-inline
       %input#register-email.form-control{autofocus: 'autofocus', name: 'user[email]', placeholder: 'Correo electrónico', size: '30', title: 'Obligatorio', type: 'text', value: ''}
@@ -35,19 +32,7 @@
       Crear cuenta
 
   .alternative-action.additional-note
-    ¿Ya tienes la cuenta creada?
+    Si ya has creado tu cuenta,
     %br
     %a.js-switch-action{href: '#signin', rel: 'nofollow', title: "Entra en Kelisto con tu cuenta"}
-      Entra aquí
-
-
-  -# .additional-note
-  -#   dsfg sdfgs dfgsdfgs dfgs fsdfgsdfg sdfgsdfg sdfgsfgsdfg sdfgsdfg sdfgsdfgsfgsdfgsfg sd
-    -# Formando parte de
-    -# = @config.app_name
-    -# podrás
-    -# %strong recuperar comparativas de precios,
-    -# entrar en la
-    -# %strong comunidad, participar en el foro
-    -# y tener
-    -# %strong acceso a ofertas personalizadas
+      entra aquí
