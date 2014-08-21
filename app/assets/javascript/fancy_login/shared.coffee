@@ -16,7 +16,7 @@ class @Notification
       else if window.location.hash.indexOf("n=logged-out") != -1
         text = "Acabas de salir de Kelisto"
       else if window.location.hash.indexOf("n=reset-pass") != -1
-        text = "Te hemos enviado un correo para reestablecer la contraseña"
+        text = "Email enviado, consulta la bandeja de entrada de tu correo"
       return text
     return false
 
