@@ -55,9 +55,12 @@ $modal-background: #f8f9fa;
     h5{
       width:80%;
       color: #fff;
-      font: normal 1.5em/1em 'Raleway', Helvetica, sans-serif;
+      font: normal 1.2em/1em 'Raleway', Helvetica, sans-serif;
       font-weight: 200;
       padding:0;
+      @include mobile-landscape-and-up {
+        font-size: 1.5em/1em;
+      }
     }
 
     .close-btn{

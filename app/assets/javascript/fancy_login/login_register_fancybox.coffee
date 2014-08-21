@@ -111,10 +111,11 @@ class @LoginBox
         title: null
       beforeShow: ()->
         if $(@element).hasClass('not-registered')
+          $('#loginbox-header h5').text("Regístrate en #{$('#loginbox-header h5').data('appName')}")
           $("#loginbox-sign-in").css("display","none")
           $("#loginbox-sign-up").css("display","block")
-          # $("#register_form .email input").focus()
         else
+          $('#loginbox-header h5').text("Inicia sesión en #{$('#loginbox-header h5').data('appName')}")
           $("#loginbox-sign-up").css("display","none")
           $("#loginbox-sign-in").css("display","block")
 
@@ -123,13 +124,13 @@ class @LoginBox
       @clearFancyBoxError()
       target = $(e.target).attr("href")
       if target is "#signup"
-        $("#loginbox-sign-in").slideUp ->
-          $('#loginbox-header h5').text("Inicia sesión en #{$('#loginbox-header h5').data('appName')}")
-          $("#loginbox-sign-up").slideDown()
-      else if target is "#signin"
-        $("#loginbox-sign-up").slideUp ->
+        $("#loginbox-sign-in").fadeOut ->
           $('#loginbox-header h5').text("Regístrate en #{$('#loginbox-header h5').data('appName')}")
-          $("#loginbox-sign-in").slideDown()
+          $("#loginbox-sign-up").fadeIn()
+      else if target is "#signin"
+        $("#loginbox-sign-up").fadeOut ->
+          $('#loginbox-header h5').text("Inicia sesión en #{$('#loginbox-header h5').data('appName')}")
+          $("#loginbox-sign-in").fadeIn()
 
   @block: =>
     @blocked = true
