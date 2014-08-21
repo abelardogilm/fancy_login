@@ -56,7 +56,7 @@ class @LoginBox
 
     $('a.btn-google').click (e) =>
       e.preventDefault()
-      @showFancyBoxMessage('¡Ops! Esta función todavía no está disponible.', true)
+      @showFancyBoxMessage('¡Ups! Esta función no está disponible ahora. Puedes registrarte con Facebook o tu email.', true)
       return false
 
     $("#loginbox input").keyup (e) =>
