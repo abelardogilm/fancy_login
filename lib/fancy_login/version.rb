@@ -1,3 +1,3 @@
 module FancyLogin
-  VERSION = "1.0.6" # new fancy login
+  VERSION = "1.0.7" # new fancy login
 end
