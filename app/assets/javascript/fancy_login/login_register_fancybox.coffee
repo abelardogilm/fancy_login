@@ -78,7 +78,6 @@ class @LoginBox
       mixingpanel_tracker.track "Login", {"action":"signin with google", "location":"login fancybox", "url": document.URL }
 
     $('#register_form').submit (e) =>
-      mixingpanel_tracker.track "Register", {"action":"register", "location":"login fancybox", "url": document.URL }
       @formSubmit e, $('#register_form').data("url")
 
     $('#loginbox-sign-up .btn-facebook').click (e) =>
@@ -206,6 +205,12 @@ class @LoginBox
 
       if has_errors
         $.fancybox.update()
+        
+        if (form_id == "register_form")
+          mixingpanel_tracker.track "Register", {"action":"register unsuccessful", "location":"login fancybox", "url": document.URL }
+        else
+          mixingpanel_tracker.track "Login", {"action":"signin unsuccessful", "location":"login fancybox", "url": document.URL }
+
         return false
 
       # send the request
