@@ -29,6 +29,7 @@ class @ForgotPassBox
     $('.forgot-pass').on "click", (e)=>
       @clear()
       $("#forgotpassbox input").val $("#login_form .email input").val()
+      mixingpanel_tracker.track "Login", {"action":"reset password click", "location":"login fancybox", "url": document.URL }
       e.preventDefault();
 
     $('.js-close').click (e)->
@@ -73,6 +74,8 @@ class @ForgotPassBox
       form.find("button").attr('disabled', 'disabled')
       window.LoginBox.block()
 
+      mixingpanel_tracker.track "Login", {"action":"reset password attemp", "location":"login fancybox", "url": document.URL }
+      
       $.ajax({
         url: form.data("url"),
         dataType: "JSONP",
