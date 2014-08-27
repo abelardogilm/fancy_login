@@ -1,15 +1,15 @@
 PATH
   remote: .
   specs:
-    fancy_login (1.0.7)
-      coffee-rails (~> 3.2.2)
+    fancy_login (1.0.8)
+      coffee-rails (>= 3.2.2)
       compass (>= 0.12.2)
       compass-normalize (>= 1.4.2)
       compass-rails (>= 1.0.3)
       haml
       jquery-rails
       nokogiri
-      sass-rails (~> 3.2.3)
+      sass-rails (>= 3.2.3)
       susy (>= 1.0.5)
 
 GEM
