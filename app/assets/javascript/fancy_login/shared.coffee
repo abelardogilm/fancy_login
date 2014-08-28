@@ -39,7 +39,7 @@ class @Notification
       , 500)
 
     # Remove the param from hash to avoid repetition of notification on refresh
-    window.location.hash = ""
+    window.location.hash = '_' # We use _ instead of an empty string to avoid a scroll issue on Chrome
 
 
 
