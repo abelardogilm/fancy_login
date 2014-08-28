@@ -34,7 +34,7 @@ class @Notification
         setTimeout(
           ()->
             $notification.fadeOut(800)
-        , 3000)
+        , 5000)
 
       , 500)
 
