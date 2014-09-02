@@ -260,12 +260,19 @@ class @LoginBox
             return
 
           if json.need_confirm
-            # Trying to register with unconfirmed aacount
-            mixingpanel_tracker.track "Register", {"action":"register needs confirmation", "location":"login fancybox", "url": document.URL }
+            if $(form).attr("id") == "login_form"
+              # Trying to login with unconfirmed acount
+              mixingpanel_tracker.track "Login", {"action":"register needs confirmation", "location":"login fancybox", "url": document.URL }
+              @clear
+              @showFancyBoxMessage(json.message, false)
+            else
+              mixingpanel_tracker.track "Register", {"action":"register needs confirmation", "location":"login fancybox", "url": document.URL }
+              $.fancybox.close()
+              notification = new Notification
+              notification.show(json.message)
+
             form.find("button").removeAttr('disabled')
             @constructor.unblock()
-            @clear
-            @showFancyBoxMessage(json.message, false)
 
           else
             # Track succesful login / register
