@@ -23,19 +23,16 @@ class @Notification
   show: (text)->
     $notification = $('<div/>', {
       class: 'js-top-notification'
-      html: "<i class='icon-info'></i>#{text}"
+      html: "<i class='icon-info'></i>#{text}<span class='close icon-error'></span>"
     })
 
     $("body").prepend($notification);
 
+    $('.js-top-notification .close').click ->
+      $notification.fadeOut(800)
     setTimeout(
       ()->
         $notification.fadeIn(1000)
-        setTimeout(
-          ()->
-            $notification.fadeOut(800)
-        , 5000)
-
       , 500)
 
     # Remove the param from hash to avoid repetition of notification on refresh
