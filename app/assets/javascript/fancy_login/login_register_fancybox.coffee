@@ -109,6 +109,8 @@ class @LoginBox
       helpers:
         title: null
       beforeShow: ()->
+        $("#navigation li.hover").removeClass 'hover' # Hide any possible navigation bar open
+        
         if $(@element).hasClass('not-registered')
           $('#loginbox-header h5').text("Regístrate en #{$('#loginbox-header h5').data('appName')}")
           $("#loginbox-sign-in").css("display","none")
