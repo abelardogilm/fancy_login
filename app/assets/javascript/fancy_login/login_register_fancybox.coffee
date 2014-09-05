@@ -2,6 +2,7 @@ class @LoginBox
 
   constructor: () ->
     @initFancybox()
+    @getRegistrationsCount()
     @target = null
 
   #Initialize fancybox and attach click event on each link with class not-logged-in
@@ -90,6 +91,7 @@ class @LoginBox
 
   show_into_fancybox: () =>
     @clear()
+    self = this
 
     $('.not-logged-in').fancybox
       href: '#loginbox'
@@ -113,6 +115,7 @@ class @LoginBox
         
         if $(@element).hasClass('not-registered')
           $('#loginbox-header h5').text("Regístrate en #{$('#loginbox-header h5').data('appName')}")
+          self.getRegistrationsCount();
           $("#loginbox-sign-in").css("display","none")
           $("#loginbox-sign-up").css("display","block")
         else
@@ -125,8 +128,9 @@ class @LoginBox
       @clearFancyBoxError()
       target = $(e.target).attr("href")
       if target is "#signup"
-        $("#loginbox-sign-in").fadeOut ->
+        $("#loginbox-sign-in").fadeOut =>
           $('#loginbox-header h5').text("Regístrate en #{$('#loginbox-header h5').data('appName')}")
+          @getRegistrationsCount();
           $("#loginbox-sign-up").fadeIn()
       else if target is "#signin"
         $("#loginbox-sign-up").fadeOut ->
@@ -305,4 +309,12 @@ class @LoginBox
                     (?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9][a-z0-9-]*[a-z0-9]
                   $ ///i
     pattern.test emailAddress
+
+  getRegistrationsCount: ->
+    $.ajax
+      url: 'http://mi.kelisto.dev/api/users/count.json'
+      success: (json) ->
+        $(".header-claim").text("""
+          Únete a nuestra comunidad de #{json['total']} consumidores inteligentes
+        """)
 
