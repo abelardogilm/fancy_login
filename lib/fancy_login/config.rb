@@ -54,7 +54,6 @@ module FancyLogin
       def confirmation_url
         url + routes["confirmation_path"]
       end
-
     end
   end
 end
