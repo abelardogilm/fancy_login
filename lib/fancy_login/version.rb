@@ -1,3 +1,3 @@
 module FancyLogin
-  VERSION = "0.0.5"
+  VERSION = "1.0.13" # added cache for views
 end
