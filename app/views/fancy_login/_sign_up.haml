@@ -1,5 +1,6 @@
 #loginbox-sign-up
   .header-claim
+    Crea tu cuenta en Kelisto
   .facebook-access-wrapper
     = render 'fancy_login/sign_up_facebook' if @config.user["has_facebook_login"]
   .google-access-wrapper
@@ -8,7 +9,7 @@
   .micro-note
     (Kelisto nunca publicará en tu muro sin tu permiso)
 
-  %form#register_form{method: 'post', action: '#', data: {url: @config.sign_up_url}}
+  %form#register_form{method: 'post', action: '#', data: {url: @config.sign_up_url, count_url: @config.count_url}}
     .or-line o bien, con tu email
     .email.form-group
       .help-inline
