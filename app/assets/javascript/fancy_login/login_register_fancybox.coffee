@@ -311,8 +311,11 @@ class @LoginBox
     pattern.test emailAddress
 
   getRegistrationsCount: ->
+    url = $('#register_form').data('count-url')
     $.ajax
-      url: 'http://mi.kelisto.dev/api/users/count.json'
+      url: url
+      dataType: "JSONP"
+      type: 'GET'
       success: (json) ->
         $(".header-claim").text("""
           Únete a nuestra comunidad de #{json['total']} consumidores inteligentes

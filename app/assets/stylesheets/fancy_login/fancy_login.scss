@@ -96,7 +96,6 @@ $modal-background: #f8f9fa;
 
     }
     #loginbox-sign-up{
-
     }
   }
 
@@ -106,11 +105,20 @@ $modal-background: #f8f9fa;
     }
   }
 
+  .header-claim{
+    border-bottom: 1px solid shade($lightgray,8);
+    color: shade($lightgray,35);
+    font: normal 1.1em/1.2em 'Raleway', Helvetica, sans-serif;
+    margin: 1em;
+    padding-bottom: .5em;
+    text-align: center;
+  }
+
   .additional-note{
     color: shade($lightgray,35);
     font-size: .9em;
   }
-  
+
   .micro-note{
     @extend .additional-note;
     font-size: .7em;
@@ -118,6 +126,7 @@ $modal-background: #f8f9fa;
     text-align: center;
     padding: 0 .5em;
   }
+
 
   .or-line {
     display: block;
