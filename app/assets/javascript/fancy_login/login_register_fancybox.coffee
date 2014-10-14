@@ -2,7 +2,6 @@ class @LoginBox
 
   constructor: () ->
     @initFancybox()
-    @getRegistrationsCount()
     @target = null
 
   #Initialize fancybox and attach click event on each link with class not-logged-in
@@ -112,7 +111,7 @@ class @LoginBox
         title: null
       beforeShow: ()->
         $("#navigation li.hover").removeClass 'hover' # Hide any possible navigation bar open
-        
+
         if $(@element).hasClass('not-registered')
           $('#loginbox-header h5').text("Regístrate en #{$('#loginbox-header h5').data('appName')}")
           self.getRegistrationsCount();
@@ -211,7 +210,7 @@ class @LoginBox
 
       if has_errors
         $.fancybox.update()
-        
+
         if (form_id == "register_form")
           mixingpanel_tracker.track "Register", {"action":"register unsuccessful", "location":"login fancybox", "url": document.URL }
         else
@@ -309,15 +308,3 @@ class @LoginBox
                     (?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9][a-z0-9-]*[a-z0-9]
                   $ ///i
     pattern.test emailAddress
-
-  getRegistrationsCount: ->
-    url = $('#register_form').data('count-url')
-    $.ajax
-      url: url
-      dataType: "JSONP"
-      type: 'GET'
-      success: (json) ->
-        $(".header-claim").text("""
-          Únete a nuestra comunidad de #{json['total']} consumidores inteligentes
-        """)
-
