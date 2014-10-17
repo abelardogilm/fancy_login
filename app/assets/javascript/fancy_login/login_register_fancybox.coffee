@@ -114,6 +114,7 @@ class @LoginBox
 
         if $(@element).hasClass('not-registered')
           $('#loginbox-header h5').text("Regístrate en #{$('#loginbox-header h5').data('appName')}")
+          self.getRegistrationsCount();
           $("#loginbox-sign-in").css("display","none")
           $("#loginbox-sign-up").css("display","block")
         else
@@ -128,6 +129,7 @@ class @LoginBox
       if target is "#signup"
         $("#loginbox-sign-in").fadeOut =>
           $('#loginbox-header h5').text("Regístrate en #{$('#loginbox-header h5').data('appName')}")
+          @getRegistrationsCount();
           $("#loginbox-sign-up").fadeIn()
       else if target is "#signin"
         $("#loginbox-sign-up").fadeOut ->
