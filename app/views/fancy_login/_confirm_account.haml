@@ -1,26 +1,27 @@
 #remembertokenbox.modalbox
   .modal-header
-    %h1
+    %h5
       Confirmación usuario
-    %a.remembertokenbox-close.close-btn{href: '#', rel: 'nofollow'}
-      X
+    %a.js-close.close-btn{href: '#', rel: 'nofollow', title: "Cerrar"}
+      %i.icon-error
 
-  .modal-content
-    .wrapper
-      .centered
-        %h3
-          Ingrese su dirección de email
-        %h2
-          Le enviemos un enlace con el activar su cuenta de usuario
-      %form#remembertokenbox-form{method: 'post', action: '#', data: {url: @config.confirmation_url }}
-        .email
-          %label{for: '#remembertokenbox-email'} Correo electrónico
-          .help-inline
-          %p
-            %input#remembertokenbox-email.form-control{autofocus: 'autofocus', name: 'user[email]', placeholder: 'Correo electrónico', size: '30', title: 'Obligatorio', type: 'text', value: ''}
+  .confirm-email-again-content
 
-        .other
-          .help-inline
+    %form#remembertokenbox-form{method: 'post', action: '#', data: {url: @config.confirmation_url }}
+
+      %h6
+        Ingresa tu dirección de email
+      .additional-note
+        Te enviemos un enlace con el activar tu cuenta de usuario
+
+      .email
+        %label{for: '#remembertokenbox-email'}
+        .help-inline
         %p
-          %button.btn.btn-success.btn-large.btn-block{type: 'submit'}
-            Enviar email
+          %input#remembertokenbox-email.form-control{autofocus: 'autofocus', name: 'user[email]', placeholder: 'Correo electrónico', size: '30', title: 'Obligatorio', type: 'text', value: ''}
+
+      .other
+        .help-inline
+      %p
+        %button.btn.button-green.btn-block{type: 'submit'}
+          Enviar email

@@ -1,43 +1,40 @@
-#loginbox-sign-up.loginbox-col
-  %h2
-    ¿Todavía no tienes una cuenta?
-
-  %p.centered
-    Formando parte de 
-    = @config.app_name
-    podrás
-    %strong recuperar comparativas de precios,
-    entrar en la
-    %strong comunidad, participar en el foro
-    y tener
-    %strong acceso a ofertas personalizadas
-
-  .centered
+#loginbox-sign-up
+  .header-claim
+    = fancy_users_count
+  .facebook-access-wrapper
     = render 'fancy_login/sign_up_facebook' if @config.user["has_facebook_login"]
+  .google-access-wrapper
+    = render 'fancy_login/sign_up_google' if @config.user["has_google_login"]
 
-  %h3.centered
-    O regístrate con tu correo electrónico
+  .micro-note
+    (Kelisto nunca publicará en tu muro sin tu permiso)
 
-  %form#register_form{method: 'post', action: '#', data: {url: @config.sign_up_url}}
-    .email
+  %form#register_form{method: 'post', action: '#', data: { url: @config.sign_up_url }}
+    .or-line o bien, con tu email
+    .email.form-group
       .help-inline
-      %p
-        %input#register-email.form-control{autofocus: 'autofocus', name: 'user[email]', placeholder: 'Correo electrónico', size: '30', title: 'Obligatorio', type: 'text', value: ''}
+      %input#register-email.form-control{autofocus: 'autofocus', name: 'user[email]', placeholder: 'Correo electrónico', size: '30', title: 'Obligatorio', type: 'text', value: ''}
 
-    .password
+    .password.form-group
       .help-inline
-      %p
-        %input#register-pass.form-control{name: 'user[password]', placeholder: 'Contraseña', maxlength: '30', type: 'password'}
+      %input#register-pass.form-control{name: 'user[password]', placeholder: 'Contraseña', maxlength: '30', type: 'password'}
 
     .other
       .help-inline
 
     #terms
       .help-inline
-      = check_box_tag "loginbox-terms-and-conditions", 0, nil, :id => "loginbox-terms-and-conditions"
-      = label_tag "loginbox-terms-and-conditions" do
-        Confirmo que he leído y acepto la
-        %a{:href => "/politica-de-privacidad"} política de privacidad
-      %p
-      %button.btn.btn-success.btn-large.btn-block{type: 'submit'}
-        Crear cuenta
+      .additional-note
+        = check_box_tag "loginbox-terms-and-conditions", 0, nil, :id => "loginbox-terms-and-conditions"
+        = label_tag "loginbox-terms-and-conditions" do
+          Confirmo que he leído y acepto la
+          %a{:href => "/politica-de-privacidad", :target => '_blank'} política de privacidad
+
+    %button.btn.button-green.btn-large.btn-block{type: 'submit'}
+      Crear cuenta
+
+  .alternative-action.additional-note
+    Si ya has creado tu cuenta,
+    %br
+    %a.js-switch-action{href: '#signin', rel: 'nofollow', title: "Entra en Kelisto con tu cuenta"}
+      entra aquí

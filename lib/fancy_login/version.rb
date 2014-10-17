@@ -1,3 +1,3 @@
 module FancyLogin
-  VERSION = "0.0.5"
+  VERSION = "1.0.16" # added registrations counter
 end
