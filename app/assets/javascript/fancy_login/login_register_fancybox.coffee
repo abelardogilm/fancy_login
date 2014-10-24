@@ -62,10 +62,11 @@ class @LoginBox
     $("#loginbox input").keyup (e) =>
       if e.keyCode == 27 # close dialog on <Esc>
         $.fancybox.close()
+        @clearField e
         return
       else if e.keyCode == 13 # don't clear error on <Enter>
         return
-      @clearField e
+
 
     $('#login_form').submit (e) =>
       mixingpanel_tracker.track "Login", {"action":"signin", "location":"login fancybox", "url": document.URL }
@@ -109,9 +110,9 @@ class @LoginBox
       maxWidth: "500px" # images won't exceed the browser's width
       helpers:
         title: null
+
       beforeShow: ()->
         $("#navigation li.hover").removeClass 'hover' # Hide any possible navigation bar open
-
         if $(@element).hasClass('not-registered')
           $('#loginbox-header h5').text("Regístrate en #{$('#loginbox-header h5').data('appName')}")
           $("#loginbox-sign-in").css("display","none")
@@ -120,6 +121,7 @@ class @LoginBox
           $('#loginbox-header h5').text("Inicia sesión en #{$('#loginbox-header h5').data('appName')}")
           $("#loginbox-sign-up").css("display","none")
           $("#loginbox-sign-in").css("display","block")
+
 
   attachSwitchLoginRegisterHandler: ()->
     $(".js-switch-action").on "click", (e) =>
