@@ -1,3 +1,3 @@
 module FancyLogin
-  VERSION = "1.0.18" # fixed jumping fancybox
+  VERSION = "1.0.19" # fixed jumping fancybox
 end
