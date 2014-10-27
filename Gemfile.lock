@@ -4,7 +4,7 @@ PATH
     fancy_login (1.0.19)
       coffee-rails (~> 3.2.2)
       compass (= 0.12.6)
-      compass-normalize (~> 1.4.2)
+      compass-normalize
       compass-rails (~> 1.0.3)
       haml
       jquery-rails
@@ -44,7 +44,7 @@ GEM
       chunky_png (~> 1.2)
       fssm (>= 0.2.7)
       sass (~> 3.2.19)
-    compass-normalize (1.4.3)
+    compass-normalize (1.5)
       compass (>= 0.12.0)
     compass-rails (1.0.3)
       compass (>= 0.12.2, < 0.14)
