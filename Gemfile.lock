@@ -1,11 +1,11 @@
 PATH
   remote: .
   specs:
-    fancy_login (1.0.20)
+    fancy_login (1.0.21)
       coffee-rails (~> 3.2.2)
       compass (= 0.12.6)
       compass-normalize
-      compass-rails (~> 1.0.3)
+      compass-rails (= 2.0.0)
       haml
       jquery-rails
       nokogiri
@@ -46,8 +46,8 @@ GEM
       sass (~> 3.2.19)
     compass-normalize (1.5)
       compass (>= 0.12.0)
-    compass-rails (1.0.3)
-      compass (>= 0.12.2, < 0.14)
+    compass-rails (2.0.0)
+      compass (>= 0.12.2)
     erubis (2.7.0)
     execjs (2.2.2)
     fssm (0.2.10)
