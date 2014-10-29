@@ -98,20 +98,19 @@ class @LoginBox
       closeBtn: false
       enableEscapeButton:true
       padding:0
-      autoSize:false
+      autoSize: true   # sets autoHeight & autoWidth to auto. Fancybox height depends on its content!
       width: 330
-      height: 'auto'
-      autoHeight: true
       openMethod: 'dropIn'
       openSpeed: 300
       closeMethod: 'dropOut'
       closeSpeed: 200
-      fitToView: true  # images won't be scaled to fit to browser's height
+      fitToView: false  # false means no resizing when the keyboard comes out etc.
       maxWidth: "500px" # images won't exceed the browser's width
       helpers:
         title: null
 
       beforeShow: ()->
+
         $("#navigation li.hover").removeClass 'hover' # Hide any possible navigation bar open
         if $(@element).hasClass('not-registered')
           $('#loginbox-header h5').text("Regístrate en #{$('#loginbox-header h5').data('appName')}")
