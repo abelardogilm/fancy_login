@@ -6,9 +6,16 @@ class @LoginBox
 
   #Initialize fancybox and attach click event on each link with class not-logged-in
   initFancybox: () ->
-    @show_into_fancybox()
 
-    @attachSwitchLoginRegisterHandler()
+    w = Math.max(document.documentElement.clientWidth, window.innerWidth || 0)
+    h = Math.max(document.documentElement.clientHeight, window.innerHeight || 0)
+    # If the device is smaller than X don't use fancybox login, but go to login screen...
+    if w < 768 || h < 768
+      @ignoreFancyboxLogin = true
+
+    unless @ignoreFancyboxLogin
+      @show_into_fancybox()
+      @attachSwitchLoginRegisterHandler()
 
     # Add tracking on signout link
     $(document).on "click", ".signout", (e) =>
@@ -17,12 +24,17 @@ class @LoginBox
         mixingpanel_tracker.track $(e.currentTarget).data('event'),
                                   $(e.currentTarget).data('extraProps')
 
+
     #since .not-logged-in can be applied to a link or a button
     $(document).on "click", ".not-logged-in", (e) =>
       # Track mixpanel events for login links
       if $(e.currentTarget).data("event")?
         mixingpanel_tracker.track $(e.currentTarget).data('event'),
                                   $(e.currentTarget).data('extraProps')
+      if @ignoreFancyboxLogin
+        url = '<%= "#{Rails.configuration.cam_url}/usuarios/registro?return_to=" %>'
+        window.location.href = url + window.location
+
       if @blocked
         return
 
@@ -68,6 +80,7 @@ class @LoginBox
         return
 
 
+
     $('#login_form').submit (e) =>
       mixingpanel_tracker.track "Login", {"action":"signin", "location":"login fancybox", "url": document.URL }
       @formSubmit e, $('#login_form').data('url')
@@ -92,22 +105,28 @@ class @LoginBox
   show_into_fancybox: () =>
     @clear()
     self = this
-
     $('.not-logged-in').fancybox
+      self: this
       href: '#loginbox'
       closeBtn: false
       enableEscapeButton:true
       padding:0
-      autoSize: true   # sets autoHeight & autoWidth to auto. Fancybox height depends on its content!
-      width: 330
+      # autoSize: true   # sets autoHeight & autoWidth to auto. Fancybox height depends on its content!
+      autoResize: false
+      # height: "100%"
+
       openMethod: 'dropIn'
       openSpeed: 300
       closeMethod: 'dropOut'
       closeSpeed: 200
-      fitToView: false  # false means no resizing when the keyboard comes out etc.
+
+      fitToView: true  # false means no resizing when the keyboard comes out etc.
       maxWidth: "500px" # images won't exceed the browser's width
+      # autoCenter: true
       helpers:
         title: null
+        overlay:
+          locked: true
 
       beforeShow: ()->
 
@@ -120,6 +139,12 @@ class @LoginBox
           $('#loginbox-header h5').text("Inicia sesión en #{$('#loginbox-header h5').data('appName')}")
           $("#loginbox-sign-up").css("display","none")
           $("#loginbox-sign-in").css("display","block")
+      afterShow: ()=>
+        # Manually focus the input because input autofocus squeezes the fancybox on mobile
+        $("#loginbox-sign-in #loginbox-email").select()
+
+      beforeClose: ()=>
+        window.scrollTo( $(self).position.top, 0);
 
 
   attachSwitchLoginRegisterHandler: ()->
