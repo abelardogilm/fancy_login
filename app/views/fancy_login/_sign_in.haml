@@ -1,8 +1,8 @@
 #loginbox-sign-in
   .facebook-access-wrapper
     = render 'fancy_login/sign_in_facebook' if @config.user["has_facebook_login"]
-  .google-access-wrapper
-    = render 'fancy_login/sign_in_google' if @config.user["has_google_login"]
+  -# .google-access-wrapper
+  -#   = render 'fancy_login/sign_in_google' if @config.user["has_google_login"]
 
 
   %form#login_form{method: 'post', action: '#', data: {url: @config.sign_in_url}}

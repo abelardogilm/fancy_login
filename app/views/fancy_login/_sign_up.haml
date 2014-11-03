@@ -3,8 +3,8 @@
     = fancy_users_count
   .facebook-access-wrapper
     = render 'fancy_login/sign_up_facebook' if @config.user["has_facebook_login"]
-  .google-access-wrapper
-    = render 'fancy_login/sign_up_google' if @config.user["has_google_login"]
+  -# .google-access-wrapper
+  -#   = render 'fancy_login/sign_up_google' if @config.user["has_google_login"]
 
   .micro-note
     (Kelisto nunca publicará en tu muro sin tu permiso)

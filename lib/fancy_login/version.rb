@@ -1,3 +1,3 @@
 module FancyLogin
-  VERSION = "1.0.23" # Edit return_to on mobile
+  VERSION = "1.0.24" # Removed g+ button login & register
 end
