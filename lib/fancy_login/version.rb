@@ -1,3 +1,3 @@
 module FancyLogin
-  VERSION = "1.0.24" # Removed g+ button login & register
+  VERSION = "1.0.25" # Fixed problem where desktop computers with low height were considered mobiles
 end
