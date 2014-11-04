@@ -1,4 +1,4 @@
-- cache ["fancy_login", FancyLogin::VERSION] do
+- cache ['fancy_login', FancyLogin::VERSION], race_condition_ttl: 10, expires_in: 3.hours do
   %div{style: 'display:none'}
     #loginbox.modalbox
       #loginbox-header.modal-header
@@ -13,5 +13,5 @@
         = render 'fancy_login/sign_in'
         = render 'fancy_login/sign_up'
 
-    = render 'fancy_login/reset_password' if @config.user["has_reset_password"]
-    = render 'fancy_login/confirm_account' if @config.user["has_confirmation"]
+    = render 'fancy_login/reset_password' if @config.user['has_reset_password']
+    = render 'fancy_login/confirm_account' if @config.user['has_confirmation']
