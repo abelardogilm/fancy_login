@@ -11,9 +11,7 @@ class @Notification
   getText: ()->
     # If has begins with #? that means we have a variable passed
     if window.location.hash.slice(0,2) == "#?"
-      if window.location.hash.indexOf("n=logged-in") != -1
-        text = "Acabas de entrar en Kelisto"
-      else if window.location.hash.indexOf("n=logged-out") != -1
+      if window.location.hash.indexOf("n=logged-out") != -1
         text = "Acabas de salir de Kelisto"
       else if window.location.hash.indexOf("n=reset-pass") != -1
         text = "Email enviado, consulta la bandeja de entrada de tu correo"
