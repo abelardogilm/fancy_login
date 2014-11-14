@@ -304,8 +304,9 @@ class @LoginBox
               notification = new Notification
 
               if $('#kecambio-form').length != 0
-                $('#kecambio-form').append("<input type='hidden' name='new-user-id' value='#{json.user.id}'/>")
-                $('#kecambio-form').append("<input type='hidden' name='new-user-email' value='#{json.user.email}'/>")
+                $('#kecambio-form').append("<input type='hidden' name='new_user_id' value='#{json.user.id}'/>")
+                $('#kecambio-form').append("<input type='hidden' name='new_user_email' value='#{json.user.email}'/>")
+                $('#kecambio-form').submit()
                 notification.show('[KECAMBIO] you need confirmation')
               else
                 notification.show(json.message)
