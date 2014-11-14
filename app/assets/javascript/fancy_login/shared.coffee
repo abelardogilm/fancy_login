@@ -77,6 +77,8 @@ window.processLogin = () ->
     eval(callback).call(this,target);
   else if LoginBox.target?.prop("nodeName").toLowerCase() == 'input' and LoginBox.target.attr("type").toLowerCase() == 'submit'
     LoginBox.target.closest('form').submit()
+  else if $('#kecambio-form').length != 0
+    $('#kecambio-form').submit()
   else if LoginBox.target?.data('target-url')
     location.href = LoginBox.target.data('target-url')
   else
@@ -111,20 +113,3 @@ $(document).ready ()->
   notification = new Notification
   if text = notification.getText()
     notification.show(text)
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
