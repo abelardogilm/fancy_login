@@ -32,12 +32,15 @@ class @LoginBox
     #since .not-logged-in can be applied to a link or a button
     $(document).on "click", ".not-logged-in", (e) =>
       # Track mixpanel events for login links
-      if $(e.currentTarget).data("event")?
+      eventName = $(e.currentTarget).data("event")
+      if eventName?
         mixingpanel_tracker.track $(e.currentTarget).data('event'),
                                   $(e.currentTarget).data('extraProps')
       if @ignoreFancyboxLogin
         url = '<%= "#{Rails.configuration.cam_url}/usuarios/registro?return_to=" %>'
-        window.location.href = url + window.location
+        url = url + window.location
+        url = url + '&n=register' if eventName is 'Register'
+        window.location.href = url
 
       if @blocked
         return

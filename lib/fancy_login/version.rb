@@ -1,3 +1,3 @@
 module FancyLogin
-  VERSION = "1.0.29" # Added forum landing registration feature
+  VERSION = "1.0.30" # register param if register event
 end
