@@ -1,3 +1,3 @@
 module FancyLogin
-  VERSION = "1.0.28" # Aded counter delimiter and removed login notification
+  VERSION = "1.0.29" # Added forum landing registration feature
 end

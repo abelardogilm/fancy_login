@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    fancy_login (1.0.27)
+    fancy_login (1.0.29)
       coffee-rails
       compass (= 0.12.6)
       compass-normalize

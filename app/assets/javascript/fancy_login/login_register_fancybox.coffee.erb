@@ -302,7 +302,14 @@ class @LoginBox
               mixingpanel_tracker.track "Register", {"action":"register needs confirmation", "location":"login fancybox", "url": document.URL }
               $.fancybox.close()
               notification = new Notification
-              notification.show(json.message)
+
+              if $('#fancy-form').length != 0
+                $('#fancy-form').append("<input type='hidden' name='new_user_id' value='#{json.user.id}'/>")
+                $('#fancy-form').append("<input type='hidden' name='new_user_email' value='#{json.user.email}'/>")
+                $('#fancy-form').submit()
+                notification.show('[KECAMBIO] you need confirmation')
+              else
+                notification.show(json.message)
 
             form.find("button").removeAttr('disabled')
             @constructor.unblock()
