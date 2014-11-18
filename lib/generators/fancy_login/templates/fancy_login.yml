@@ -4,6 +4,7 @@ user:
   has_confirmation: false
   has_reset_password: false
   has_facebook_login: false
+  has_google_login: false
 routes:
   url: "http://domain.example.com"
   sign_in_path: "path/to/signin"
@@ -11,3 +12,4 @@ routes:
   confirmation_path: "path/send/email/confirm"
   reset_password_path: "path/send/email/confirm"
   facebook_path: "path/facebook"
+  count_path: "path/count"
