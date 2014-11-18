@@ -311,6 +311,9 @@ class @LoginBox
                 $('#fancy-form').append("<input type='hidden' name='new_user_email' value='#{json.user.email}'/>")
                 $('#fancy-form').submit()
                 notification.show('[KECAMBIO] you need confirmation')
+              else if $('body').hasClass('dont_return')
+                returnURL = $('#return-url').data('return-url')
+                window.location = returnURL
               else
                 notification.show(json.message)
 
