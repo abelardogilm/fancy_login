@@ -38,7 +38,11 @@ class @LoginBox
                                   $(e.currentTarget).data('extraProps')
       if @ignoreFancyboxLogin
         url = '<%= "#{Rails.configuration.cam_url}/usuarios/registro?return_to=" %>'
-        url = url + window.location
+        # handle other return if given
+        if $('body').hasClass('dont_return')
+          url = url + $('#return-url').data('return-url')
+        else
+          url = url + window.location
         url = url + '&n=register' if eventName is 'Register'
         window.location.href = url
 
@@ -313,7 +317,7 @@ class @LoginBox
                 notification.show('[KECAMBIO] you need confirmation')
               else if $('body').hasClass('dont_return')
                 returnURL = $('#return-url').data('return-url')
-                window.location = returnURL
+                window.location.href = returnURL
               else
                 notification.show(json.message)
 
