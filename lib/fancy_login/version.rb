@@ -1,3 +1,3 @@
 module FancyLogin
-  VERSION = "1.0.31" # handle other return than default
+  VERSION = "1.0.32" # Remove login notification
 end
