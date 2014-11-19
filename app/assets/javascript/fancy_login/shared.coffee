@@ -15,7 +15,7 @@ class @Notification
         text = "Acabas de salir de Kelisto"
       else if window.location.hash.indexOf("n=reset-pass") != -1
         text = "Email enviado, consulta la bandeja de entrada de tu correo"
-      else if window.location.hash.indexOf("n=confirm-email")
+      else if window.location.hash.indexOf("n=confirm-email") != -1
         text = "¡Gracias por unirte a Kelisto! Activa la cuenta desde tu correo y comienza a participar en nuestra gran comunidad de ahorradores."
       return text
     return false
