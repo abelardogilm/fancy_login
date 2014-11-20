@@ -17,7 +17,12 @@ class @Notification
         text = "Email enviado, consulta la bandeja de entrada de tu correo"
       else if window.location.hash.indexOf("n=confirm-email") != -1
         text = "¡Gracias por unirte a Kelisto! Activa la cuenta desde tu correo y comienza a participar en nuestra gran comunidad de ahorradores."
+      else if window.location.hash.indexOf("n=participation-confirmed") != -1
+        text = '¡Muchas gracias por participar y mucha suerte!'
+      else if window.location.hash.indexOf("n=participation-unconfirmed") != -1
+        text = 'Muchas gracias por participar.  Tu historia será publicada cuando confirmes tu dirección de email.'
       return text
+
     return false
 
   show: (text)->
