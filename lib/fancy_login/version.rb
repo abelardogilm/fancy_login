@@ -1,3 +1,3 @@
 module FancyLogin
-  VERSION = "1.0.33" # Add kecambio notifications
+  VERSION = "1.0.34" # Add the mobile kecambio logic
 end
