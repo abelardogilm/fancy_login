@@ -37,20 +37,22 @@ class @LoginBox
         mixingpanel_tracker.track $(e.currentTarget).data('event'),
                                   $(e.currentTarget).data('extraProps')
       if @ignoreFancyboxLogin
-        url = '<%= "#{Rails.configuration.cam_url}/usuarios/registro?return_to=" %>'
-        # handle other return if given
-        if $('body').hasClass('dont_return')
-          url = url + $('#return-url').data('return-url')
-        else
-          url = url + window.location
-        url = url + '&n=register' if eventName is 'Register'
-        window.location.href = url
+        @mobileRedirect(eventName)
 
       if @blocked
         return
 
       @target = $(e.target)
       e.preventDefault()
+      @clear()
+
+    # Used for forum campaigns that can submit data with unconfirmed users
+    $(document).on 'click', '.not-logged-in-mobile', (e) =>
+      if @ignoreFancyboxLogin
+        e.preventDefault()
+        @mobileRedirect()
+
+      @target = $(e.target)
       @clear()
 
     $('a.loginbox-close').click (e) ->
@@ -352,3 +354,13 @@ class @LoginBox
                     (?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9][a-z0-9-]*[a-z0-9]
                   $ ///i
     pattern.test emailAddress
+
+  mobileRedirect: (eventName = 'Register') ->
+    url = '<%= "#{Rails.configuration.cam_url}/usuarios/registro?return_to=" %>'
+    # handle other return if given
+    if $('body').hasClass('dont_return')
+      url = url + $('#return-url').data('return-url')
+    else
+      url = url + window.location
+    url = url + '&n=register' if eventName is 'Register'
+    window.location.href = url
