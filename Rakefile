@@ -20,7 +20,9 @@ RDoc::Task.new(:rdoc) do |rdoc|
   rdoc.rdoc_files.include('lib/**/*.rb')
 end
 
-
+Dir["lib/tasks/*"].each do |task|
+  load task
+end
 
 
 Bundler::GemHelper.install_tasks

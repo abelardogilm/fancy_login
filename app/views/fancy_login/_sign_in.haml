@@ -1,29 +1,38 @@
-#loginbox-sign-in.loginbox-col
-  %h2
-    = "Accede a #{@config.app_name}"
-
-  .centered
+#loginbox-sign-in
+  .facebook-access-wrapper
     = render 'fancy_login/sign_in_facebook' if @config.user["has_facebook_login"]
-      
+  -# .google-access-wrapper
+  -#   = render 'fancy_login/sign_in_google' if @config.user["has_google_login"]
 
-  %h3.centered
-    O accede con tu correo electrónico
+
   %form#login_form{method: 'post', action: '#', data: {url: @config.sign_in_url}}
-    .email
-      .help-inline
-      %p
-        %input#loginbox-email.form-control{autofocus: 'autofocus', name: 'user[email]', placeholder: 'Correo electrónico', size: '30', title: 'Obligatorio', type: 'text', value: ''}
+    .or-line o bien, con tu email
 
-    .password
+    .email.form-group
       .help-inline
-      %p
-        %input#loginbox-pass.form-control{name: 'user[password]', placeholder: 'Contraseña', maxlength: '30', type: 'password'}
+      %input#loginbox-email.form-control{ name: 'user[email]', placeholder: 'Correo electrónico', size: '30', title: 'Obligatorio', type: 'text', value: ''}
+
+    .password.form-group
+      .help-inline
+      %input#loginbox-pass.form-control{name: 'user[password]', placeholder: 'Contraseña', maxlength: '30', type: 'password'}
+
+    - if @config.user["has_reset_password"]
+      .forgot-password-wrapper
+        %a.forgot-pass{href: '#', rel: 'nofollow'}
+          Recupera tu contraseña
 
     .other
       .help-inline
-    %p
-      %button.btn.btn-primary.btn-large{type: 'submit'}
-        Iniciar Sesión
-      - if @config.user["has_reset_password"]
-        %a.forgot-pass{href: '#', rel: 'nofollow'}
-          ¿Has olvidado tu contraseña?
+
+
+    %button.btn.button-green.btn-block{type: 'submit'}
+      Entrar
+
+
+  .alternative-action.additional-note
+    ¿No estás registrado?
+    %a.js-switch-action{href: '#signup', rel: 'nofollow', title:"Crea tu cuenta de Kelisto"}
+      Regístrate ahora
+    .micro-note
+      (Tardarás menos de un minuto)
+
