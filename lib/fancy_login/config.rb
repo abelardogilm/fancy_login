@@ -43,6 +43,10 @@ module FancyLogin
         url + routes["facebook_path"]
       end
 
+      def count_url
+        url + routes["count_path"]
+      end
+
       def facebook_url_callback
         url + facebook_url + "/callback"
       end
@@ -54,7 +58,6 @@ module FancyLogin
       def confirmation_url
         url + routes["confirmation_path"]
       end
-
     end
   end
 end

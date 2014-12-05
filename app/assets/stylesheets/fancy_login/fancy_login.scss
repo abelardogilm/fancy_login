@@ -1,147 +1,240 @@
-@import "compass";                    //General compass mixins
+@import "compass";
+@import "mediaqueries";
+@import "animate";
+@import "buttons";
 
 $purple:  #7B1C76;
 $purple-text: #861f82;
 $lightgray: #f2f2f2;
-$red-error-text: #B94A48;
+$red-error-text: #ea5958;
 $secondary: #eeaf00;//orange
+$blue:          #79c8f0;
+$modal-background: #f8f9fa;
 
+@mixin input-placeholder {
+  &.placeholder { @content; }
+  &:-moz-placeholder { @content; }
+  &::-moz-placeholder { @content; }
+  &:-ms-input-placeholder { @content; }
+  &::-webkit-input-placeholder { @content; }
+}
 
-.modalbox {
+.js-top-notification{
+  position: absolute;
+  top:0;
+  left:0;
+  display: none;
+  padding: 2em;
+  width:100%;
+  color: #fff;
+  z-index: 100;
+  background: rgba($blue, 0.95);
+  font-size: 1.25em;
+  i{
+    font-size: 1.2em;
+    margin-right: 1em;
+  }
+
+  .close {
+    float: right;
+    cursor: pointer;
+    font-size: 1.4em;
+  }
+
+}
+
+.modalbox{
+  @include pie-clearfix;
   width: 100%;
   height: 100%;
-  background: $lightgray;
-  @include pie-clearfix;
   @include border-radius(4px 4px 0px 0px);
+  background: $modal-background;
 
-  .spinner {
-    position: fixed;
-    top: 0;
-    left: 0;
+  // font: normal 1.2em/1em 'Open-Sans', Helvetica, sans-serif;
+
+  .modal-header{
+    position:relative;
     width: 100%;
-    height: 100%;
-    color: black;
-    background: rgba(0,0,0,.5) url(/assets/fancybox_loading.gif) center center no-repeat;
-    z-index: 8000;
-    .hidden {
-      z-index: -100;
+    overflow: hidden;
+
+    @include border-radius(4px 4px 0px 0px);
+    background: $blue;
+    h5{
+      width:80%;
+      color: #fff;
+      font: normal 1.2em/1em 'Raleway', Helvetica, sans-serif;
+      font-weight: 700;
+      padding:0;
+      @include mobile-landscape-and-up {
+        font-size: 1.5em/1em;
+      }
+    }
+
+    .close-btn{
+      position: absolute;
+      right:0;
+      top: 0;
+      width: 2em;
+      height: 3em;
+      padding-top: .6em;
+      background: shade($blue,20);
+      color: #fff;
+      font-size: 1.6em;
+      line-height: 1em;
+      text-align: center;
+
+      &:hover {
+        text-decoration: none;
+        color: tint($blue,10);
+        // background: shade($blue,30);
+      }
     }
   }
 
+  .login-content{
+
+    #loginbox-sign-in{
+
+    }
+    #loginbox-sign-up{
+    }
+  }
+
+  .reset-password-content, .confirm-email-again-content{
+    input, button{
+      margin: .5em auto;
+    }
+  }
+
+  .header-claim{
+    border-bottom: 1px solid shade($lightgray,8);
+    color: shade($lightgray,35);
+    font: normal 1.1em/1.2em 'Raleway', Helvetica, sans-serif;
+    margin: 1em;
+    padding-bottom: .5em;
+    text-align: center;
+  }
+
+  .additional-note{
+    color: shade($lightgray,35);
+    font-size: .9em;
+  }
+
+  .micro-note{
+    @extend .additional-note;
+    font-size: .7em;
+    font-style: italic;
+    text-align: center;
+    padding: 0 .5em;
+  }
+
+
+  .or-line {
+    display: block;
+    position: relative;
+    text-align: center;
+    width: 100%;
+    z-index: 1;
+    margin-bottom: 1.5em;
+    color: shade(#fff,40);
+    font-size: 0.85em;
+    &:before {
+      width: 120px;
+      height: 10px;
+      background: $modal-background;
+      content: '';
+      margin: -5px 0 0 -60px;
+      left: 50%;
+      position: absolute;
+      top: 50%;
+      z-index: -1;
+    }
+    &:after {
+      border-bottom: 1px solid shade($lightgray,8);
+      content: '';
+      display: block;
+      position: absolute;
+      top: 49%;
+      width: 100%;
+      z-index: -2;
+    }
+  }
+
+  form{
+    // background: shade(#fff,1);
+    padding: .8em 1.5em;
+    border-bottom: 1px shade($lightgray,8) solid;
+    input{
+      @include input-placeholder {
+        color: shade(#e5e5e5,10);
+        font-style: italic;
+        font-size: 1em;
+      }
+      &[type=text],&[type=password]{
+        border: 1px tint($blue, 50) solid;
+      }
+    }
+    button{
+      padding: 1em;
+    }
+  }
+  .forgot-password-wrapper{
+    position:relative;
+    top: -.8em;
+    text-align: right;
+  }
+  .forgot-pass {
+    margin: 1em auto;
+    font-size: .9em;
+  }
+  .facebook-access-wrapper{
+    margin: 1em auto;
+    padding: 0 1em;
+    text-align: center;
+    .additional-note {
+      padding-bottom: 0.5em;
+    }
+  }
+  .google-access-wrapper {
+    margin: 1em auto;
+    padding: 0 1em;
+    text-align: center;
+  }
+  .alternative-action{
+    width: 100%;
+    padding:1em;
+    text-align: center;
+    background: #fff;
+    a{
+      margin: 1em auto;
+      display: block;
+      text-decoration: underline;
+      @include animate(fadeInUp, 1s, .6s, ease, 1);
+    }
+  }
+
+
   .facebook-notice, .fancybox-notice {
     display: none;
-    background-color: $red-error-text;
     color: white;
-    padding: 0.5em;
-    margin: -0.5em 0.5em 0.5em 0.5em;
-    @include border-radius(4px);
-
+    background-color: $blue;
+    padding: 1em;
+    margin: .5em 0.5em 0.5em 0.5em;
     &.error {
       display: block;
+      background-color: $red-error-text;
       clear: both;
       width: auto;
     }
     a.resend-email-link{
       cursor: pointer;
-    }
-  }
-  .modal-header{
-    position:relative;
-    height: 4.5em;
-    width: 100%;
-    overflow: hidden;
-    margin-bottom: 1.45em;
-    @include border-radius(4px 4px 0px 0px);
-    background: $purple;
-    h1{
-      width:80%;
-      color: #fff;
-      font: normal 2.6em/2.6em Arial, Helvetica, sans-serif;
-      padding:0;
-      margin:-0.4em auto auto .6em;
-    }
-
-    .close-btn{
-      display: block;
-      position: absolute;
-      right:0.9em;
-      top:0;
-      color:#fff;
-      width:20px;
-      height:40px;
-      font: normal 2em/2em Arial, Helvetica, sans-serif;
-
-      &:hover {
-        text-decoration: none;
-        color: $secondary;
-      }
+      background: #fff;
+      padding: 0 .2em;
+      @include border-radius(.4em);
+      color: $blue;
     }
   }
 
-  .centered {
-    text-align: center;
-  }
-
-  h2 {
-    font: normal 2.2em Arial, Helvetica, sans-serif;
-    text-align: center;
-    margin: 0 0 0.3em 0;
-  }
-
-  .loginbox-col{
-    width: 47%;
-    padding:.2em .6em;
-  }
-
-  #loginbox-sign-in{
-    margin-left:0.8em;
-    float: left;
-    background:#fff;
-
-    button[type='submit'] {
-      background-color: $purple-text;
-      border-color:$purple-text;
-      text-transform: none;
-      font-size: 0.8em;
-      padding: 0 2.5em;
-      height: 3.8em;
-    }
-  }
-
-  #loginbox-sign-up{
-    margin: 0 1.2em 1em 0;
-    float: right;
-
-    form {
-      margin: 0 1em 0 1em;
-    }
-  }
-
-  &#forgotpassbox, &#remembertokenbox {
-    .wrapper {
-      margin: 1em 3.3em;
-      padding: 1.3em 15%;
-      background-color: white;
-
-      h3 {
-        font-size: 1.5em;
-      }
-
-      h2 {
-        font-size: 1.4em;
-      }
-    }
-  }
-
-  button {
-    background-image:none;
-  }
-
-  .btn-facebook {
-    background-color: #578ee8;
-    height: 3.5em;
-    padding: 1em 1em 0 3em;
-  }
 
   .help-inline {
     display: none;
@@ -155,6 +248,8 @@ $secondary: #eeaf00;//orange
   .error {
     .help-inline {
       display: block;
+      font-size: .9em;
+      font-variant: italic;
       color: $red-error-text;
     }
 
@@ -165,6 +260,7 @@ $secondary: #eeaf00;//orange
   }
 
   #terms{
+    margin-bottom: 1em;
     input, label{
       display: inline;
       margin:0;
@@ -172,17 +268,11 @@ $secondary: #eeaf00;//orange
     }
   }
 
-  .forgot-pass {
-    color: $purple-text;
-    font-size: 0.8em;
-    margin-left: 1em;
-  }
 
   .resend-token-link{
     text-decoration: underline;
     cursor: pointer;
   }
-}
 
 
-
+}//modal-box
